@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "generated_at_utc": "2026-06-30T17:33:06.290500+00:00",
+  "source": {
+    "github_actions_run_id": "28462033837",
+    "commit": "e66caf8cef9b6cefa677a0d90e29d010b79ae9a5",
+    "smoke_summary": "smoke-evidence/run_summary.json",
+    "stress_summary": "insufficient-workforce-evidence/run_summary.json",
+    "fixed_origin_predictions": "smoke-evidence/metrics/fixed_origin_predictions.csv",
+    "intraday_recourse_actions": "smoke-evidence/metrics/intraday_recourse_actions.csv"
+  },
+  "figures": [
+    "decision_pipeline.svg",
+    "fixed_origin_forecast.svg",
+    "bounded_recourse.svg",
+    "release_gate_comparison.svg"
+  ],
+  "claim_boundary": "Figures summarize offline synthetic operational replay evidence and do not represent live customer traffic, AWS deployment, or causal real-time rollout."
+}
