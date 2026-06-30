@@ -1,0 +1,45 @@
+﻿# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Packaging outputs
+build/
+dist/
+*.egg-info/
+*.whl
+*.tar.gz
+
+# Runtime / generated artifacts
+outputs/
+artifacts/
+evidence/
+.local-run/
+reports/candidate/
+reports/qualification/
+reports/qualification_logs/
+reports/coverage.xml
+reports/*.duration_ms
+reports/*.rc
+
+# Local release and repair machinery
+Amazon10_*.ps1
+*.repair_manifest.json
+*.sha256
+release_bundle_manifest.json
+release_candidate_handoff.json
+final_windows_local_release_evidence_*.json
+
+# Local operating-system files
+.DS_Store
+Thumbs.db
+
+# Historical local patch backups
+*.bak

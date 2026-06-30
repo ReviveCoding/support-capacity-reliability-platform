@@ -1,0 +1,105 @@
+data:
+  agents: 36
+  days: 35
+  event_days:
+  - 20
+  - 21
+  - 22
+  - 29
+  interval_minutes: 30
+  observed_reach_rate: 0.97
+  recontact_probability: 0.08
+  redial_probability: 0.35
+  regions:
+  - north
+  - south
+  save_event_level: true
+  skills:
+  - billing
+  - technical
+  - account
+  start_date: '2026-01-01'
+forecast:
+  calibration_fraction: 0.17
+  chronos:
+    context_length: 96
+    enabled: false
+    model_id: amazon/chronos-2
+  horizon_intervals: 48
+  lags:
+  - 1
+  - 2
+  - 48
+  - 96
+  - 336
+  models:
+  - seasonal
+  - poisson
+  - lightgbm
+  quantiles:
+  - 0.1
+  - 0.5
+  - 0.9
+  rolling_windows:
+  - 6
+  - 48
+  - 336
+  target: offered_load_estimate
+  torch:
+    batch_size: 256
+    device: auto
+    epochs: 6
+    hidden_dim: 48
+    learning_rate: 0.003
+  train_fraction: 0.65
+optimization:
+  excess_capacity_penalty: 10.0
+  overtime_hourly_cost: 52.0
+  regular_hourly_cost: 34.0
+  schedule_preference_penalty: 2.0
+  shortage_penalty: 180.0
+  shrinkage_buffer: 0.12
+  solver_time_limit_seconds: 2
+project:
+  name: support-capacity-reliability-insufficient-workforce-stress
+  output_dir: outputs/stress_insufficient_workforce
+  seed: 42
+queue:
+  abandonment_target: 0.12
+  max_agents_per_pool: 30
+  policy_tuning_replications: 3
+  replications: 4
+  service_level_seconds: 120
+  service_level_target: 0.8
+  simulation_hours: 12
+  staffing_load_quantile: 0.85
+rcwe:
+  blend_strength: 0.45
+  distance_temperature: 1.0
+  enabled: true
+  low_support_interval_inflation: 1.3
+  max_low_support_rate_for_selection: 0.75
+  minimum_support: 0.2
+  neighbors: 12
+release_gate:
+  max_abandonment_rate: 0.25
+  max_fixed_origin_coverage_error: 0.15
+  max_fixed_origin_wape: 0.65
+  max_interval_coverage_error: 0.15
+  max_p95_wait_seconds: 900
+  max_recourse_action_rate: 0.4
+  max_recourse_cost_share: 0.4
+  max_scenario_coherence_error: 1.0e-08
+  max_worst_slice_wape: 0.65
+  min_schedule_feasibility: 1.0
+  min_strategic_tactical_alignment: 1.0
+  require_capacity_plan_success: true
+  min_slice_count_for_wape: 30
+  min_peak_q90_coverage: 0.65
+  min_incident_q90_coverage: 0.8
+  min_peak_sample_count: 10
+  min_incident_sample_count: 5
+  max_hard_violations: 0
+scenarios:
+  correlation_shrinkage: 0.15
+  count: 32

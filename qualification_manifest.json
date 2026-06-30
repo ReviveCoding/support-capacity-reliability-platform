@@ -1,0 +1,666 @@
+{
+  "schema_version": "1.0",
+  "generated_at_utc": "2026-06-18T17:42:05.839478+00:00",
+  "project_name": "support-capacity-reliability",
+  "qualified_version": "1.4.1rc2",
+  "qualification_profile": "EXTENDED_LOCAL_LINUX_SCOPE",
+  "final_verdict": "CONDITIONALLY QUALIFIED",
+  "local_status": "PASS: Linux x86_64, Python 3.13.5, CPU canonical path, Q2 source and Q3 built-wheel paths",
+  "github_status": "GitHub configuration validated only; GitHub-hosted run NOT EXECUTED",
+  "github_evidence_level": "Q0 configuration inspection + Q2 local workflow-equivalent; Q4 NOT_EXECUTED",
+  "qualified_commit": null,
+  "qualified_commit_note": "Archive contained no .git metadata; source fingerprint is the immutable candidate identity for this qualification.",
+  "candidate_source_fingerprint": "8f8f755f90eb73aef1195d3bf14663c21dcaf7897b0fa4bba4e5dd894e040e62",
+  "source_manifest": {
+    "path": "reports/candidate/source_manifest.json",
+    "size_bytes": 19708,
+    "sha256": "4a1f30a7638139e1fbe754c0566158efe6dfccace51d4246fa651e33635b40b8"
+  },
+  "release_candidate_handoff": {
+    "path": "release_candidate_handoff.json",
+    "size_bytes": 17862,
+    "sha256": "f24809837d15e8e87b143ccc2d697e3f531d4a343567dc2a920046b47850d5a1"
+  },
+  "evidence_levels": {
+    "Q0": {
+      "status": "PASS",
+      "scope": "repository/config/workflow/package/static inspection"
+    },
+    "Q1": {
+      "status": "PASS",
+      "scope": "current workspace tests, runtime, API, failure injection, concurrency, benchmark"
+    },
+    "Q2": {
+      "status": "PASS",
+      "scope": "clean non-editable source install and E2E in space/Unicode path"
+    },
+    "Q3": {
+      "status": "PASS",
+      "scope": "built-wheel-only install, pip check, outside-repo CLI/doctor/E2E/artifact reload"
+    },
+    "Q4": {
+      "status": "NOT_EXECUTED",
+      "scope": "no exact-commit GitHub-hosted run access"
+    }
+  },
+  "environment_matrix": [
+    {
+      "os": "Linux 4.4.0 x86_64",
+      "python": "3.13.5",
+      "architecture": "x86_64",
+      "cpu_count": 56,
+      "gpu": "NOT_EXECUTED",
+      "status": "PASS",
+      "evidence": "Q1-Q3"
+    },
+    {
+      "os": "ubuntu-latest",
+      "python": "3.11/3.12/3.13",
+      "status": "CONFIGURED_ONLY",
+      "evidence": "Q0 + local command parity"
+    },
+    {
+      "os": "windows-latest",
+      "python": "3.11",
+      "status": "CONFIGURED_ONLY",
+      "evidence": "Q0; no Windows execution"
+    }
+  ],
+  "dependency_contract": {
+    "manager": "pip/venv + pyproject.toml",
+    "exact_qualification_constraints": "constraints/qualification-py313.txt",
+    "constraint_scope": "Python 3.13 qualification environment; not a universal cross-platform lockfile",
+    "pip_check_q2": "PASS",
+    "pip_check_q3": "PASS",
+    "torch": "optional extra",
+    "chronos": "optional extra"
+  },
+  "commands": [
+    {
+      "phase": "static",
+      "command": "python -m ruff format --check src tests scripts",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/final_static_ruff_format.log",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "static",
+      "command": "python -m ruff check src tests scripts",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/final_static_ruff_lint.log",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "static",
+      "command": "python -m compileall -q src scripts tests",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/final_static_compileall.log",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "ci-static",
+      "command": "python scripts/verify_ci.py",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/final_static_ci.log",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "security",
+      "command": "python scripts/security_scan.py",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/security_scan_exact.log",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "tests",
+      "command": "PYTHONPATH=src python scripts/run_test_suite.py --suite all --coverage --coverage-fail-under 85",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": 248.0,
+      "log": "reports/qualification/final_release_suite_1.log",
+      "summary": "reports/qualification/final_release_suite_1_summary.json",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "tests",
+      "command": "PYTHONPATH=src python scripts/run_test_suite.py --suite all --coverage --coverage-fail-under 85",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": 235.0,
+      "log": "reports/qualification/final_release_suite_2.log",
+      "summary": "reports/qualification/final_release_suite_2_summary.json",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "q2-install",
+      "command": "python -m pip install --constraint constraints/qualification-py313.txt . && python -m pip check",
+      "cwd": "/mnt/data/Q2 clean source \u03a9 space",
+      "exit_code": 0,
+      "duration_seconds": 58.0,
+      "log": "reports/qualification/q2_final_install.log",
+      "evidence_level": "Q2",
+      "status": "PASS"
+    },
+    {
+      "phase": "q2-runtime",
+      "command": "support-capacity run --config configs/smoke.yaml --require-release; verify-output; verify-model-bundle",
+      "cwd": "/mnt/data/Q2 exact smoke \u03a9 space",
+      "exit_code": 0,
+      "duration_seconds": 62.0,
+      "log": "reports/qualification/q2_exact_smoke_run.log",
+      "evidence_level": "Q2",
+      "status": "PASS"
+    },
+    {
+      "phase": "root-runtime",
+      "command": "canonical smoke + insufficient-workforce stress + artifact reload",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": 131.0,
+      "log": "reports/qualification/root_exact_smoke_run.log",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "build",
+      "command": "python -m build",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": 15.0,
+      "log": "reports/qualification/final_artifact_build.log",
+      "evidence_level": "Q2",
+      "status": "PASS"
+    },
+    {
+      "phase": "distribution",
+      "command": "PYTHONPATH=src python scripts/verify_distribution.py",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/final_artifact_verify.log",
+      "evidence_level": "Q2",
+      "status": "PASS"
+    },
+    {
+      "phase": "q3-install",
+      "command": "python -m pip install --no-deps --force-reinstall dist/*.whl && python -m pip check",
+      "cwd": "/mnt/data/Q3 final artifact verified \u03a9 space",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/q3_final_artifact_reinstall.log",
+      "evidence_level": "Q3",
+      "status": "PASS"
+    },
+    {
+      "phase": "q3-runtime",
+      "command": "support-capacity run --config smoke.yaml --require-release; verify-output; verify-model-bundle",
+      "cwd": "/mnt/data/Q3 final artifact verified \u03a9 space",
+      "exit_code": 0,
+      "duration_seconds": 40.0,
+      "log": "reports/qualification/q3_final_artifact_verified_run.log",
+      "evidence_level": "Q3",
+      "status": "PASS"
+    },
+    {
+      "phase": "api-lifecycle",
+      "command": "uvicorn startup/health/request/shutdown repeated 3x",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/api_exact_smoke_1.log",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "api-failure",
+      "command": "real socket malformed/missing/unknown/content-type/path traversal/port conflict",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/api_failure_injection.json",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "api-performance",
+      "command": "PYTHONPATH=src python scripts/benchmark_api.py --requests 200 --concurrency 8 --warmup 20",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": 7.0,
+      "log": "reports/qualification/api_benchmark_exact.json",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "artifact-failure",
+      "command": "corrupt output/bundle then verify original remains valid",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/failure_artifact_results.json",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "concurrency",
+      "command": "two writers targeting same output directory",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 0,
+      "duration_seconds": null,
+      "log": "reports/qualification/concurrency_exact_results.json",
+      "evidence_level": "Q1",
+      "status": "PASS"
+    },
+    {
+      "phase": "vulnerability-scan",
+      "command": "python -m pip_audit",
+      "cwd": "/mnt/data/support-capacity-reliability-platform-v1.4.1rc2-qualified",
+      "exit_code": 1,
+      "duration_seconds": null,
+      "log": "reports/qualification/pip_audit.log",
+      "evidence_level": "Q1",
+      "status": "NOT_AVAILABLE",
+      "note": "Vulnerability database query failed because external DNS/package index access was unavailable."
+    }
+  ],
+  "test_result": {
+    "suite_1": {
+      "passed": 107,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "xpassed": 0
+    },
+    "suite_2": {
+      "passed": 107,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "xpassed": 0
+    },
+    "isolated_modules": 32,
+    "coverage_percent": 90.0,
+    "coverage_gate_percent": 85.0,
+    "consecutive_full_suite_passes": 2,
+    "critical_skips": 0,
+    "warnings": "No project-owned critical warning recorded in final suite logs"
+  },
+  "runtime_result": {
+    "canonical": {
+      "status": "PASS_WITH_RECOURSE",
+      "variant": "lightgbm+rcwe",
+      "policy": "fixed_ratio+intraday_recourse",
+      "one_step_wape": 0.38056486218393376,
+      "fixed_origin_wape": 0.38130101569551844,
+      "total_cost": 9492.690000000002,
+      "peak_q90_coverage": 0.7121212121212122,
+      "incident_q90_coverage": 0.9166666666666666,
+      "hard_violations": 0,
+      "bundle_replay_max_abs_error": 7.105427357601002e-15
+    },
+    "negative_stress": {
+      "expected_status": "ITERATE",
+      "actual_status": "ITERATE",
+      "hard_violations": 1,
+      "schedule_feasibility": 0.9787234042553191
+    },
+    "canonical_smoke_pass_count": 4,
+    "canonical_smoke_evidence": [
+      "Q2 exact source",
+      "Q3 prior built wheel",
+      "repository-root exact runtime",
+      "Q3 final rebuilt wheel"
+    ]
+  },
+  "failure_injection": {
+    "api": {
+      "schema_version": "1.0",
+      "status": "PASS",
+      "cases": {
+        "malformed_json": 422,
+        "missing_required_field": 422,
+        "unknown_field": 422,
+        "invalid_content_type": 422,
+        "path_traversal": 403,
+        "port_conflict_returncode": 1
+      },
+      "server_shutdown_returncode": -15
+    },
+    "artifact": {
+      "corrupt_output_exit": 1,
+      "corrupt_bundle_exit": 1,
+      "original_intact_exit": 0
+    },
+    "concurrency": {
+      "status": "PASS",
+      "first_exit": 0,
+      "second_exit": 75,
+      "verify_exit": 0,
+      "lock_removed": true
+    },
+    "interrupted_publish_and_stale_pointer": "PASS through unit/integration tests",
+    "external_service": "NOT_APPLICABLE for canonical offline path"
+  },
+  "performance": {
+    "concurrency": 8,
+    "error_rate": 0.0,
+    "errors": 0,
+    "expected_signal_exit": true,
+    "gate": {
+      "observational_only_for_latency_and_memory": true,
+      "predefined_latency_threshold": null,
+      "required_error_rate": 0.0
+    },
+    "latency_ms": {
+      "max": 24.04588,
+      "mean": 16.30578,
+      "p50": 16.048427,
+      "p95": 18.436619,
+      "p99": 22.863081
+    },
+    "process_after": {
+      "fd_count": 13,
+      "rss_kib": 318860,
+      "threads": 81
+    },
+    "process_before": {
+      "fd_count": 13,
+      "rss_kib": 310100,
+      "threads": 77
+    },
+    "public_entrypoint": "uvicorn support_capacity_reliability.api.app:app",
+    "requests": 200,
+    "schema_version": "1.0",
+    "shutdown_ok": true,
+    "shutdown_returncode": -15,
+    "startup_seconds": 3.830294,
+    "status": "PASS",
+    "throughput_requests_per_second": 472.278,
+    "wall_clock_seconds": 0.423479,
+    "warmup_requests": 20
+  },
+  "security_and_supply_chain": {
+    "local_secret_scan": {
+      "files_scanned": 150,
+      "findings": [],
+      "limitations": [
+        "Local regex scan only; this is not GitHub secret scanning or a vulnerability database scan.",
+        "Matched secret values are never written to the report."
+      ],
+      "schema_version": "1.0",
+      "status": "PASS"
+    },
+    "artifact_content_audit_status": "PASS",
+    "pip_audit": "NOT_AVAILABLE: vulnerability database query failed due unavailable external DNS/index",
+    "codeql": "CONFIGURED_ONLY",
+    "dependabot": "CONFIGURED_ONLY",
+    "github_secret_scanning": "NOT_AVAILABLE/NOT_VERIFIED",
+    "workflow_actions": "full commit SHA pinned"
+  },
+  "build_artifacts": [
+    {
+      "path": "dist/support_capacity_reliability-1.4.1rc2-py3-none-any.whl",
+      "size_bytes": 95216,
+      "sha256": "6b7c10e79149db4218d28b5bf988bc37f12dfe74cbed514120be6fe386851c8f"
+    },
+    {
+      "path": "dist/support_capacity_reliability-1.4.1rc2.tar.gz",
+      "size_bytes": 81718,
+      "sha256": "c0b7b88b7ab469667bfba74f417e3de79fa3ce466c90657d843ecad1938de646"
+    }
+  ],
+  "unresolved_items": [
+    {
+      "severity": "High",
+      "item": "Exact-commit GitHub-hosted run",
+      "status": "NOT_EXECUTED",
+      "release_effect": "Limits verdict to CONDITIONALLY QUALIFIED"
+    },
+    {
+      "severity": "High",
+      "item": "Docker build/runtime",
+      "status": "NOT_EXECUTED",
+      "release_effect": "No Docker runtime claim"
+    },
+    {
+      "severity": "Medium",
+      "item": "Windows runtime parity",
+      "status": "NOT_EXECUTED",
+      "release_effect": "Configured but not executed"
+    },
+    {
+      "severity": "Medium",
+      "item": "Chronos/CUDA/GPU path",
+      "status": "NOT_EXECUTED",
+      "release_effect": "No GPU/full-model claim"
+    },
+    {
+      "severity": "Medium",
+      "item": "Vulnerability database audit",
+      "status": "NOT_AVAILABLE",
+      "release_effect": "Local regex scan only; no vulnerability PASS claim"
+    }
+  ],
+  "known_limitations": [
+    "Canonical metrics are deterministic synthetic/offline operational replay, not live customer or AWS outcomes.",
+    "Joblib artifacts must only be loaded from trusted sources.",
+    "Exact qualification constraints are scoped to the tested Python 3.13 environment.",
+    "No Git commit SHA exists because the release candidate was supplied as an archive without .git metadata."
+  ],
+  "problems_found_and_fixed": [
+    {
+      "severity": "High",
+      "problem": "CLI\uac00 JSON\uc744 \ucd9c\ub825\ud55c \ub4a4 native-library shutdown\uc5d0\uc11c \uc885\ub8cc\ub418\uc9c0 \uc54a\uc744 \uc218 \uc788\uc74c",
+      "root_cause": "\uc7a5\uc2dc\uac04/solver pipeline\uc744 public interpreter\uc5d0\uc11c \uc9c1\uc811 \uc2e4\ud589\ud558\uac70\ub098 public CLI \uc804\uccb4\uc5d0 os._exit \uc6b0\ud68c\ub97c \uc801\uc6a9\ud558\uba74 lifecycle \ubc0f cleanup contract\uac00 \uae68\uc9d0",
+      "fix": "pipeline/doctor/model-bundle probe\ub9cc bounded isolated worker\uc5d0\uc11c \uc2e4\ud589\ud558\uace0 public CLI\ub294 \uc815\uc0c1 \uc885\ub8cc; timeout\u00b7partial-output\u00b7busy exit contract \ucd94\uac00",
+      "regression_test": "test_process_utils.py, test_runtime.py, test_doctor.py, test_cli.py \ubc0f \uc2e4\uc81c CLI \ubc18\ubcf5 \uc2e4\ud589",
+      "result": "PASS"
+    },
+    {
+      "severity": "High",
+      "problem": "Base install\uc774 \uc0ac\uc2e4\uc0c1 PyTorch\uc5d0 \uc228\uc740 \uc758\uc874",
+      "root_cause": "pipeline/factory\uc758 eager torch import\uc640 base dependencies\uc758 torch \uc120\uc5b8",
+      "fix": "lazy import\uc640 torch/chronos/full optional extras; CPU canonical path\ub294 LightGBM+RCWE \uc720\uc9c0",
+      "regression_test": "test_optional_dependencies.py, test_torch_model.py, clean Q2 base install/E2E",
+      "result": "PASS"
+    },
+    {
+      "severity": "High",
+      "problem": "Core report path\uc5d0\uc11c tabulate \ubbf8\uc120\uc5b8",
+      "root_cause": "DataFrame.to_markdown() \uc0ac\uc6a9\uacfc runtime manifest \ubd88\uc77c\uce58",
+      "fix": "tabulate>=0.9,<0.10\ub97c runtime dependency\uc640 doctor\uc5d0 \ucd94\uac00",
+      "regression_test": "clean Q2 non-editable install + canonical E2E",
+      "result": "PASS"
+    },
+    {
+      "severity": "High",
+      "problem": "Unbounded latest dependency resolution\uc5d0\uc11c deterministic gate regression",
+      "root_cause": "NumPy 2.4/pandas 3.0/scikit-learn 1.9\uae4c\uc9c0 \ud5c8\uc6a9\ub418\uc5b4 \uac80\uc99d\ub418\uc9c0 \uc54a\uc740 \uc870\ud569\uc774 \uc120\ud0dd\ub428",
+      "fix": "\uac80\uc99d\ub41c minor-line upper bounds\uc640 exact Python 3.13 qualification constraints \ucd94\uac00; metric/split/threshold\ub294 \ubcc0\uacbd\ud558\uc9c0 \uc54a\uc74c",
+      "regression_test": "Q2/Q3 clean installs \ubc0f \ub3d9\uc77c WAPE/cost/config hash \ud655\uc778",
+      "result": "PASS"
+    },
+    {
+      "severity": "Medium",
+      "problem": "Module CLI\uc640 console-script --version \ubb38\uc790\uc5f4 \ubd88\uc77c\uce58",
+      "root_cause": "argparse version label\uc774 entrypoint\ub9c8\ub2e4 \ub2ec\ub790\uc74c",
+      "fix": "support-capacity 1.4.1rc2\ub85c \ud1b5\uc77c",
+      "regression_test": "CLI tests + Q2/Q3 outside-repo version checks",
+      "result": "PASS"
+    },
+    {
+      "severity": "Medium",
+      "problem": "API request unknown fields\uac00 silently ignored",
+      "root_cause": "Pydantic request models\uc5d0 extra=forbid \ubbf8\uc124\uc815",
+      "fix": "\ubaa8\ub4e0 public request model\uc744 strict schema\ub85c \uc804\ud658",
+      "regression_test": "staffing/pipeline unknown-field 422 tests + real-socket failure injection",
+      "result": "PASS"
+    },
+    {
+      "severity": "Medium",
+      "problem": "Benchmark\uac00 qualification-owned SIGTERM(-15)\uc744 service failure\ub85c \uc624\ubd84\ub958",
+      "root_cause": "POSIX signal return-code semantics \ubbf8\ubc18\uc601",
+      "fix": "expected termination signal\uc744 \uba85\uc2dc\uc801\uc73c\ub85c \ud5c8\uc6a9\ud558\uace0 \ub2e4\ub978 nonzero\ub294 \uc2e4\ud328",
+      "regression_test": "test_benchmark_api.py + exact 200-request benchmark",
+      "result": "PASS"
+    },
+    {
+      "severity": "Medium",
+      "problem": "Clean copy\uc5d0 __pycache__\uac00 \ud3ec\ud568\ub418\uc5b4 traceback path\uac00 \uc774\uc804 workspace\ub97c \uac00\ub9ac\ud0b4",
+      "root_cause": "clean-room copy exclusion \ubd88\uc644\uc804",
+      "fix": "cache/bytecode \uc81c\uc678 \ud6c4 \ubaa8\ub4e0 \uc774\uc804 evidence \ubb34\ud6a8\ud654 \ubc0f clean reset",
+      "regression_test": "\uc0c8 Unicode/space path\uc758 import/traceback/source path \uc810\uac80",
+      "result": "PASS"
+    },
+    {
+      "severity": "Medium",
+      "problem": "release_candidate_handoff.json\uc774 rc1 fingerprint\ub97c \uac00\ub9ac\ud0b4",
+      "root_cause": "qualification \uc218\uc815 \ud6c4 handoff \ubbf8\uc7ac\uc0dd\uc131",
+      "fix": "\ucd5c\uc885 frozen source\uc5d0\uc11c handoff\uc640 dependency snapshot/checksum \uc7ac\uc0dd\uc131",
+      "regression_test": "handoff referenced-file checksum validation",
+      "result": "PASS"
+    }
+  ],
+  "post_upload_addendum": {
+    "created_at_utc": "2026-06-18T18:20:03.526522+00:00",
+    "source_fingerprint_after_entrypoint_patch": "06e230f01845d58a727c77fb995bfb9cd15c66f70c6a00e2597f7c99c82804ec",
+    "entrypoint_lifecycle_patch": "console script now targets support_capacity_reliability.cli:entrypoint, which flushes stdio and hard-exits after main for CLI process lifecycle isolation",
+    "targeted_tests": "tests/unit/test_cli.py tests/unit/test_cli_release_status.py tests/unit/test_process_utils.py tests/unit/test_runtime.py tests/unit/test_api.py tests/unit/test_artifacts.py tests/integration/test_pipeline.py passed (29 tests)",
+    "static_gates": "ruff format/check, compileall, verify_ci, validate-config, doctor passed",
+    "build_gates": "python -m build and scripts/verify_distribution.py passed",
+    "q3_smoke": "wheel-only venv generated PASS_WITH_RECOURSE output and artifact verification passed; long command exit capture remained unreliable in this notebook container, so final verdict remains CONDITIONALLY QUALIFIED",
+    "release_bundle_manifest": "release_bundle_manifest.json generated"
+  },
+  "final_loop_addendum": {
+    "schema_version": "1.0",
+    "loop_name": "final_error_hardening_loop",
+    "created_by": "local_execution",
+    "source_fingerprint_after_loop": "8f8f755f90eb73aef1195d3bf14663c21dcaf7897b0fa4bba4e5dd894e040e62",
+    "version": "1.4.1rc2",
+    "verdict": "CONDITIONALLY QUALIFIED",
+    "fixed_items": [
+      {
+        "severity": "Medium",
+        "item": "root .coverage shard files included in release ZIP",
+        "fix": "removed root .coverage* shards before rebuilding final bundle"
+      },
+      {
+        "severity": "Medium",
+        "item": "long-run CLI JSON emission could still delay captured exit status in notebook wrapper",
+        "fix": "run command now emits JSON through os.write and hard-exits for console invocations while preserving main() unit-test behavior"
+      }
+    ],
+    "validated_items": [
+      "doctor PASS after runtime dependencies installed in current environment",
+      "config validation PASS",
+      "targeted CLI/runtime/API/artifact pipeline regression tests PASS",
+      "ruff format/lint PASS",
+      "compileall PASS",
+      "CI static verifier PASS",
+      "artifact index verification PASS",
+      "model bundle replay PASS",
+      "wheel/sdist rebuild PASS",
+      "distribution verifier PASS"
+    ],
+    "unresolved_items": [
+      {
+        "severity": "High",
+        "item": "GitHub-hosted Q4 run",
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "severity": "Medium",
+        "item": "Windows/Docker/GPU runtime",
+        "status": "NOT_EXECUTED"
+      },
+      {
+        "severity": "Medium",
+        "item": "full suite and repeated smoke after final raw-output CLI patch",
+        "status": "PARTIAL_TARGETED_ONLY"
+      },
+      {
+        "severity": "Medium",
+        "item": "clean dependency-resolved new venv Q3 install in this notebook window",
+        "status": "INCOMPLETE_due_long_dependency_install"
+      }
+    ],
+    "commands": [
+      {
+        "name": "doctor",
+        "exit_code": 0,
+        "duration_seconds": 25,
+        "stdout_log": "reports/final_loop/doctor.out",
+        "stderr_log": "reports/final_loop/doctor.err"
+      },
+      {
+        "name": "smoke_source",
+        "exit_code": 2,
+        "duration_seconds": 2,
+        "stdout_log": "reports/final_loop/smoke_source.out",
+        "stderr_log": "reports/final_loop/smoke_source.err"
+      },
+      {
+        "name": "targeted_tests2",
+        "exit_code": 0,
+        "duration_seconds": 21,
+        "stdout_log": "reports/final_loop/targeted_tests2.out",
+        "stderr_log": "reports/final_loop/targeted_tests2.err"
+      },
+      {
+        "name": "targeted_tests_after_exit_fix",
+        "exit_code": 0,
+        "duration_seconds": 15,
+        "stdout_log": "reports/final_loop/targeted_tests_after_exit_fix.out",
+        "stderr_log": "reports/final_loop/targeted_tests_after_exit_fix.err"
+      },
+      {
+        "name": "targeted_tests_after_raw_emit",
+        "exit_code": 1,
+        "duration_seconds": 17,
+        "stdout_log": "reports/final_loop/targeted_tests_after_raw_emit.out",
+        "stderr_log": "reports/final_loop/targeted_tests_after_raw_emit.err"
+      },
+      {
+        "name": "validate",
+        "exit_code": 0,
+        "duration_seconds": 1,
+        "stdout_log": "reports/final_loop/validate.out",
+        "stderr_log": "reports/final_loop/validate.err"
+      }
+    ],
+    "artifacts": {
+      "wheel": {
+        "path": "dist/support_capacity_reliability-1.4.1rc2-py3-none-any.whl",
+        "bytes": 95773,
+        "sha256": "701a4ac9f01abbcc4a398d26e5de7a7ffb488810db164860ed923fa2b330042e"
+      },
+      "sdist": {
+        "path": "dist/support_capacity_reliability-1.4.1rc2.tar.gz",
+        "bytes": 82101,
+        "sha256": "48e9e6ac15fa87a2b927ac3457f6d5998b025cc632d7696c6de0202b79f88c60"
+      },
+      "handoff": {
+        "path": "release_candidate_handoff.json",
+        "bytes": 17825,
+        "sha256": "9567ca893de2352a15b758da190c1a74221467130a4c8ca3d48ba01ed113a4fa"
+      }
+    }
+  }
+}

@@ -1,0 +1,106 @@
+project:
+  name: support-capacity-reliability
+  seed: 42
+  output_dir: outputs/smoke
+data:
+  days: 35
+  interval_minutes: 30
+  regions:
+  - north
+  - south
+  skills:
+  - billing
+  - technical
+  - account
+  agents: 42
+  start_date: '2026-01-01'
+  event_days:
+  - 20
+  - 21
+  - 22
+  - 29
+  redial_probability: 0.35
+  recontact_probability: 0.08
+  observed_reach_rate: 0.97
+  save_event_level: true
+forecast:
+  horizon_intervals: 48
+  train_fraction: 0.65
+  calibration_fraction: 0.17
+  target: offered_load_estimate
+  lags:
+  - 1
+  - 2
+  - 48
+  - 96
+  - 336
+  rolling_windows:
+  - 6
+  - 48
+  - 336
+  quantiles:
+  - 0.1
+  - 0.5
+  - 0.9
+  models:
+  - seasonal
+  - poisson
+  - lightgbm
+  - torch_quantile
+  torch:
+    epochs: 6
+    hidden_dim: 48
+    batch_size: 256
+    learning_rate: 0.003
+    device: auto
+  chronos:
+    enabled: false
+    model_id: amazon/chronos-2
+    context_length: 96
+rcwe:
+  enabled: true
+  neighbors: 12
+  blend_strength: 0.45
+  minimum_support: 0.2
+  distance_temperature: 1.0
+  low_support_interval_inflation: 1.3
+  max_low_support_rate_for_selection: 0.75
+scenarios:
+  count: 32
+  correlation_shrinkage: 0.15
+queue:
+  service_level_seconds: 120
+  service_level_target: 0.8
+  abandonment_target: 0.12
+  max_agents_per_pool: 30
+  simulation_hours: 12
+  replications: 4
+  policy_tuning_replications: 3
+  staffing_load_quantile: 0.85
+optimization:
+  regular_hourly_cost: 34.0
+  overtime_hourly_cost: 52.0
+  shortage_penalty: 180.0
+  excess_capacity_penalty: 10.0
+  schedule_preference_penalty: 2.0
+  solver_time_limit_seconds: 2
+  shrinkage_buffer: 0.12
+release_gate:
+  max_interval_coverage_error: 0.15
+  max_worst_slice_wape: 0.65
+  min_schedule_feasibility: 1.0
+  max_abandonment_rate: 0.25
+  max_p95_wait_seconds: 900
+  max_fixed_origin_wape: 0.65
+  max_fixed_origin_coverage_error: 0.15
+  max_scenario_coherence_error: 1.0e-08
+  require_capacity_plan_success: true
+  min_strategic_tactical_alignment: 1.0
+  max_recourse_action_rate: 0.4
+  max_recourse_cost_share: 0.4
+  min_slice_count_for_wape: 30
+  min_peak_q90_coverage: 0.65
+  min_incident_q90_coverage: 0.8
+  min_peak_sample_count: 10
+  min_incident_sample_count: 5
+  max_hard_violations: 0
