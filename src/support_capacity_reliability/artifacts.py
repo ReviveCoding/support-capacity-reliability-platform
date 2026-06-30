@@ -105,7 +105,7 @@ def persist_and_verify_model_bundle(
     artifact_dir.mkdir(parents=True, exist_ok=True)
     bundle_path = artifact_dir / "selected_forecast_bundle.joblib"
     manifest_path = artifact_dir / "selected_forecast_bundle_manifest.json"
-    verification_input_path = artifact_dir / "selected_forecast_bundle_verification_input.csv"
+    verification_input_path = artifact_dir / "selected_forecast_bundle_verification_input.joblib"
     verification_expected_path = artifact_dir / "selected_forecast_bundle_verification_expected.csv"
 
     bundle = ForecastModelBundle(
@@ -132,7 +132,9 @@ def persist_and_verify_model_bundle(
             "Bundle verification frame is missing columns: "
             + ", ".join(missing_verification_columns[:8])
         )
-    verification_frame[verification_columns].to_csv(verification_input_path, index=False)
+    joblib.dump(
+        verification_frame[verification_columns].copy(), verification_input_path, compress=3
+    )
     pd.DataFrame(
         {
             "q10": expected_forecast.q10,
@@ -179,6 +181,7 @@ def persist_and_verify_model_bundle(
         "verification_max_abs_error": None,
         "verification_input_path": str(verification_input_path.relative_to(output_dir)),
         "verification_input_sha256": _sha256(verification_input_path),
+        "verification_input_format": "joblib_dataframe_exact_v1",
         "verification_expected_path": str(verification_expected_path.relative_to(output_dir)),
         "verification_expected_sha256": _sha256(verification_expected_path),
         "load_trust_boundary": "Only load model artifacts produced by a trusted pipeline run.",
@@ -347,7 +350,13 @@ def verify_model_bundle(artifact_dir: str | Path) -> dict[str, Any]:
         raise RuntimeError("Model-bundle schema version is unsupported")
     if loaded.package_version != manifest.get("package_version"):
         raise RuntimeError("Model-bundle package version differs from its manifest")
-    input_frame = pd.read_csv(input_path)
+    if input_path.suffix == ".joblib":
+        input_frame = joblib.load(input_path)
+        if not isinstance(input_frame, pd.DataFrame):
+            raise TypeError("Model-bundle verification input is not a DataFrame")
+    else:
+        # Compatibility path for bundles emitted before exact binary verification inputs.
+        input_frame = pd.read_csv(input_path)
     expected_frame = pd.read_csv(expected_path)
     replay = loaded.predict(input_frame)
     expected = expected_frame[["q10", "q50", "q90"]].to_numpy(float)
