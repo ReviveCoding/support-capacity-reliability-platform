@@ -28,9 +28,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-torch = ["torch>=2.2,<2.11"]
+torch = ["torch>=2.2,<2.13"]
 chronos = ["chronos-forecasting>=2.1.0,<3"]
-full = ["torch>=2.2,<2.11", "chronos-forecasting>=2.1.0,<3"]
+full = ["torch>=2.2,<2.13", "chronos-forecasting>=2.1.0,<3"]
 streamlit = ["streamlit>=1.33", "plotly>=5.20"]
 dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.4", "httpx>=0.27", "build>=1.2"]
 
