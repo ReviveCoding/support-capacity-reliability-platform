@@ -1,4 +1,4 @@
-# Release Qualification Report â€” support-capacity-reliability 1.4.1rc2
+# Release Qualification Report - support-capacity-reliability 1.4.1rc2
 
 ## Current qualification verdict
 
@@ -7,8 +7,8 @@
 - Current Docker-qualified tag: `v1.4.1rc2-docker-qualified-v26`
 - Docker-qualified source commit: `1c03678859c9c1cebb98abba62a916a3fc3bbece`
 - Original Windows-qualified functional tag: `v1.4.1rc2-windows-qualified-v25`
-- Hosted CI: **PASS** â€” run `28472655707`
-- CodeQL Python analysis: **PASS** â€” run `28472655791`
+- Hosted CI: **PASS** - run `28472655707`
+- CodeQL Python analysis: **PASS** - run `28472655791`
 - Docker local runtime qualification: **PASS**
 - Canonical offline release outcome inside Docker: **PASS_WITH_RECOURSE**
 
