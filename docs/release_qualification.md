@@ -1,94 +1,62 @@
-# Release Qualification Report
+# Release Qualification Report â€” support-capacity-reliability 1.4.1rc2
 
-## Current qualification identity
+## Current qualification verdict
 
-| Item | Value |
-|---|---|
-| Project version | `1.4.1rc2` |
-| Functional release tag | [`v1.4.1rc2-windows-qualified-v25`](https://github.com/ReviveCoding/support-capacity-reliability-platform/releases/tag/v1.4.1rc2-windows-qualified-v25) |
-| Qualified source commit | [`e66caf8cef9b6cefa677a0d90e29d010b79ae9a5`](https://github.com/ReviveCoding/support-capacity-reliability-platform/commit/e66caf8cef9b6cefa677a0d90e29d010b79ae9a5) |
-| GitHub Actions CI | [`28462033837`](https://github.com/ReviveCoding/support-capacity-reliability-platform/actions/runs/28462033837) â€” PASS |
-| CodeQL Python analysis | [`28462033948`](https://github.com/ReviveCoding/support-capacity-reliability-platform/actions/runs/28462033948) â€” PASS |
-| Local Windows evidence | Clean short-root STANDARD controller result â€” PASS |
-| Claim boundary | Offline synthetic operational replay; not live customer traffic, AWS production deployment, or a causal real-time rollout. |
+**DOCKER-QUALIFIED FOLLOW-UP RELEASE**
 
-## Verdict
+- Current Docker-qualified tag: `v1.4.1rc2-docker-qualified-v26`
+- Docker-qualified source commit: `1c03678859c9c1cebb98abba62a916a3fc3bbece`
+- Original Windows-qualified functional tag: `v1.4.1rc2-windows-qualified-v25`
+- Hosted CI: **PASS** â€” run `28472655707`
+- CodeQL Python analysis: **PASS** â€” run `28472655791`
+- Docker local runtime qualification: **PASS**
+- Canonical offline release outcome inside Docker: **PASS_WITH_RECOURSE**
 
-**Qualified for the documented local Windows clean-release and GitHub-hosted CI scope.**
+The original Windows-qualified v25 tag remains immutable. The v26 follow-up adds Docker runtime evidence without rewriting v25.
 
-The functional release was qualified locally on Windows in a fresh short physical root and then validated on GitHub-hosted Windows and Ubuntu runners. The qualification does not claim Docker, CUDA/GPU, Chronos-2, live production, or external vulnerability-database execution.
+## Executed evidence
 
-## Passed evidence
-
-### Windows local clean-release qualification
-
-The final short-root controller completed successfully after fresh extraction and environment bootstrap. The run validated:
-
-- Python 3.11 availability, fresh virtual environment, package installation, qualification-tool installation, and `pip check`.
-- STANDARD qualification: doctor, formatting, lint, test/coverage gate, smoke validation, build, distribution verification, installed-wheel E2E, API and pipeline smoke, artifact/output verification, and the stress gate.
-- Immutable identity evidence for the release ZIP and controller, recorded in the frozen local evidence snapshot.
-
-### GitHub-hosted CI
-
-The exact qualified commit passed all seven jobs in CI run `28462033837`:
-
-| Job | Platform / runtime | Result |
+| Scope | Result | Evidence |
 |---|---|---|
-| `smoke-ubuntu-py3.11` | Ubuntu, Python 3.11 | PASS |
-| `insufficient-workforce-ubuntu-py3.11` | Ubuntu, Python 3.11 | PASS; expected `ITERATE` negative gate |
-| `torch-quality-ubuntu-py3.11` | Ubuntu, Python 3.11, CPU PyTorch | PASS |
-| `quality-windows-latest-py3.11` | Windows, Python 3.11 | PASS |
-| `quality-ubuntu-latest-py3.11` | Ubuntu, Python 3.11 | PASS |
-| `quality-ubuntu-latest-py3.12` | Ubuntu, Python 3.12 | PASS |
-| `quality-ubuntu-latest-py3.13` | Ubuntu, Python 3.13 | PASS |
+| Windows local clean short-root STANDARD qualification | PASS | v25 functional release lineage |
+| GitHub-hosted quality validation | PASS | Windows Python 3.11; Ubuntu Python 3.11, 3.12, and 3.13 |
+| GitHub-hosted release smoke | PASS | Ubuntu Python 3.11 |
+| Optional CPU PyTorch forecaster validation | PASS | Ubuntu Python 3.11 |
+| Insufficient-workforce negative release gate | PASS | Ubuntu Python 3.11 |
+| CodeQL Python analysis | PASS | GitHub-hosted run `28472655791` |
+| Docker Desktop WSL2 Linux-container qualification | PASS | Local Docker evidence manifest SHA-256: `95516aaf915688ffcf88daa0af0d5d0c0d737612f5da1f1e09dae0494e57b833` |
 
-The smoke job verified doctor, configuration validation, canonical `PASS_WITH_RECOURSE` execution, output verification, model-bundle replay, build/distribution verification, and installed-wheel CLI/API execution. The CI workflow also uses pinned actions, least-privilege permissions, and artifact uploads for qualification evidence.
+## Docker qualification details
 
-### Static security analysis
+The v26 Docker qualification was executed from a clean source checkout at commit `1c03678859c9c1cebb98abba62a916a3fc3bbece` using a Linux container built from `python:3.11-slim`.
 
-CodeQL Python analysis completed successfully in run `28462033948` for the same commit.
+The runtime path verified:
 
-## Current canonical outcome
+1. clean Docker image build;
+2. GNU OpenMP runtime `libgomp1` for LightGBM;
+3. offline container execution with `--network none`;
+4. `--cap-drop ALL` and `no-new-privileges`;
+5. `support-capacity doctor --config configs/smoke.yaml`;
+6. canonical smoke execution with `--require-release`;
+7. output integrity verification;
+8. persisted model-bundle replay verification;
+9. container exit code `0`.
 
-The deterministic canonical smoke replay selects `lightgbm+rcwe` and produces a `PASS_WITH_RECOURSE` outcome. Its operational results are artifacts of offline synthetic replay and are not production business metrics.
+The Docker runtime produced the canonical `PASS_WITH_RECOURSE` decision. The image and container were removed after evidence capture; logs, copied runtime outputs, inspect records, and the manifest are retained locally under the Docker qualification evidence directory.
 
-| Metric | Canonical artifact value |
-|---|---:|
-| Fixed-origin WAPE | 38.13% |
-| Fixed-origin 80% interval coverage | 86.11% |
-| Worst supported-slice WAPE | 43.67% |
-| Peak q90 coverage | 71.21% |
-| Incident q90 coverage | 91.67% |
-| Strategic capacity solver | HiGHS optimal |
-| Schedule feasibility | 100% |
-| Hard violations | 0 |
-| Simulated service level | 99.47% |
-| Simulated abandonment | 0.36% |
-| Intraday recourse actions | 4 |
-| Recourse action rate | 9.52% |
-| Recourse cost share | 9.73% |
+## Claim boundary
 
-The 36-agent insufficient-workforce negative control remains `ITERATE`. This is intentional evidence that the release gate fails closed when bounded recourse cannot restore feasibility.
+This is a qualified **offline synthetic operational replay** and portability/reliability artifact. It does not establish:
 
-## Explicit non-claims
+- live customer traffic or live contact-center business impact;
+- AWS production deployment;
+- causal real-time value of intraday recourse;
+- CUDA/GPU training or inference qualification;
+- Chronos-2 qualification;
+- an external vulnerability-database audit.
 
-| Surface | Status |
-|---|---|
-| Docker build/run qualification | Not executed |
-| CUDA / GPU training qualification | Not executed |
-| Chronos-2 full-mode qualification | Not executed |
-| Live customer or proprietary contact-center data | Not used |
-| AWS production deployment | Not executed |
-| Causal real-time intraday recourse rollout | Not claimed |
-| External vulnerability-database audit | Not claimed by this release |
+GPU-ready PyTorch and optional Chronos pathways exist, but neither receives a performance or deployment claim without separate executed evidence.
 
-## Evidence artifacts and reproducibility
+## Historical document
 
-- The exact functional release is pinned by the annotated tag and GitHub Release above.
-- `scripts/qualify_local.py` is the shared cross-platform qualification entrypoint.
-- GitHub Actions retains CI artifacts according to workflow retention settings; the README figures are generated from the exact smoke and stress artifacts, with provenance stored in `docs/figures/readme_figure_manifest.json`.
-- Local Windows release ZIP/controller hashes and final controller state are retained outside the public source tree as local evidence artifacts and are not represented as GitHub release assets.
-
-## Historical report
-
-The detailed pre-upload qualification report, including earlier Linux-only and pre-hosted-CI findings, is retained in [`docs/historical_pre_github_qualification.md`](historical_pre_github_qualification.md). It is historical context, not the current final verdict.
+The archive-era pre-GitHub report is preserved in [historical_pre_github_qualification.md](historical_pre_github_qualification.md). It is historical context only and must not be read as the current qualification scope.
