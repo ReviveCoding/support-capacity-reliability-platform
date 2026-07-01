@@ -106,7 +106,9 @@ def persist_and_verify_model_bundle(
     bundle_path = artifact_dir / "selected_forecast_bundle.joblib"
     manifest_path = artifact_dir / "selected_forecast_bundle_manifest.json"
     verification_input_path = artifact_dir / "selected_forecast_bundle_verification_input.joblib"
-    verification_expected_path = artifact_dir / "selected_forecast_bundle_verification_expected.csv"
+    verification_expected_path = (
+        artifact_dir / "selected_forecast_bundle_verification_expected.joblib"
+    )
 
     bundle = ForecastModelBundle(
         schema_version=MODEL_BUNDLE_SCHEMA_VERSION,
@@ -135,14 +137,17 @@ def persist_and_verify_model_bundle(
     joblib.dump(
         verification_frame[verification_columns].copy(), verification_input_path, compress=3
     )
-    pd.DataFrame(
-        {
-            "q10": expected_forecast.q10,
-            "q50": expected_forecast.q50,
-            "q90": expected_forecast.q90,
-        }
-    ).to_csv(verification_expected_path, index=False)
-
+    joblib.dump(
+        pd.DataFrame(
+            {
+                "q10": expected_forecast.q10,
+                "q50": expected_forecast.q50,
+                "q90": expected_forecast.q90,
+            }
+        ),
+        verification_expected_path,
+        compress=3,
+    )
     try:
         joblib.dump(bundle, bundle_path, compress=3)
     except Exception as exc:
@@ -184,6 +189,7 @@ def persist_and_verify_model_bundle(
         "verification_input_format": "joblib_dataframe_exact_v1",
         "verification_expected_path": str(verification_expected_path.relative_to(output_dir)),
         "verification_expected_sha256": _sha256(verification_expected_path),
+        "verification_expected_format": "joblib_forecast_exact_v1",
         "load_trust_boundary": "Only load model artifacts produced by a trusted pipeline run.",
     }
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -357,7 +363,13 @@ def verify_model_bundle(artifact_dir: str | Path) -> dict[str, Any]:
     else:
         # Compatibility path for bundles emitted before exact binary verification inputs.
         input_frame = pd.read_csv(input_path)
-    expected_frame = pd.read_csv(expected_path)
+    if expected_path.suffix == ".joblib":
+        expected_frame = joblib.load(expected_path)
+        if not isinstance(expected_frame, pd.DataFrame):
+            raise TypeError("Model-bundle expected output is not a DataFrame")
+    else:
+        # Compatibility path for bundles emitted before exact binary expected outputs.
+        expected_frame = pd.read_csv(expected_path)
     replay = loaded.predict(input_frame)
     expected = expected_frame[["q10", "q50", "q90"]].to_numpy(float)
     observed = np.column_stack([replay.q10, replay.q50, replay.q90])

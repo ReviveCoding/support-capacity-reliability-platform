@@ -166,3 +166,120 @@ def test_binary_input_contract_is_declared_in_manifest() -> None:
 
     assert bundle.schema_version == "1.0"
     assert bundle.selected_variant == "threshold_sensitive"
+
+
+# BEGIN EXACT_BINARY_EXPECTED_OUTPUT_REGRESSION
+
+
+class Float32ThresholdSensitiveModel:
+    """Pickle-safe model emitting nontrivial float32 quantiles."""
+
+    name = "float32_threshold_sensitive"
+
+    def predict(self, frame: pd.DataFrame, features: list[str]) -> ForecastOutput:
+        values = frame[features[0]].to_numpy(dtype=float)
+        median = np.where(
+            values > 1.0,
+            np.float32(73.123451),
+            np.float32(11.234567),
+        ).astype(np.float32)
+        return ForecastOutput(
+            model_name=self.name,
+            q10=(median - np.float32(0.125)).astype(np.float32),
+            q50=median,
+            q90=(median + np.float32(0.125)).astype(np.float32),
+        )
+
+
+def test_float32_expected_output_is_preserved_without_csv_round_trip(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    frame = pd.DataFrame(
+        {
+            "signal": np.array(
+                [
+                    np.nextafter(1.0, 2.0),
+                    np.nextafter(1.0, 0.0),
+                    2.0,
+                ],
+                dtype=float,
+            ),
+            "region": ["north", "south", "east"],
+            "skill": ["billing", "technical", "fraud"],
+        }
+    )
+    model = Float32ThresholdSensitiveModel()
+    expected = model.predict(frame, ["signal"])
+    assert expected.q50.dtype == np.float32
+
+    monkeypatch.setattr(
+        artifacts,
+        "_verify_model_bundle_isolated",
+        lambda artifact_dir: verify_model_bundle(artifact_dir),
+    )
+    manifest = persist_and_verify_model_bundle(
+        output_dir=tmp_path,
+        selected_variant=model.name,
+        target="offered_load_estimate",
+        feature_columns=["signal"],
+        state_features=[],
+        lags=[1],
+        rolling_windows=[1],
+        model=model,
+        calibrator=IntervalCalibrator(),
+        rcwe=None,
+        verification_frame=frame,
+        expected_forecast=expected,
+    )
+    artifact_dir = tmp_path / "artifacts"
+    expected_path = artifact_dir / "selected_forecast_bundle_verification_expected.joblib"
+
+    assert manifest["verification_expected_format"] == "joblib_forecast_exact_v1"
+    assert manifest["verification_expected_path"] == str(expected_path.relative_to(tmp_path))
+    assert expected_path.is_file()
+    assert not (artifact_dir / "selected_forecast_bundle_verification_expected.csv").exists()
+
+    restored = joblib.load(expected_path)
+    assert isinstance(restored, pd.DataFrame)
+    np.testing.assert_array_equal(
+        restored[["q10", "q50", "q90"]].to_numpy(),
+        np.column_stack([expected.q10, expected.q50, expected.q90]),
+    )
+
+    replay = verify_model_bundle(artifact_dir)
+    assert replay["status"] == "PASS"
+    assert replay["maximum_absolute_error"] == 0.0
+
+
+def test_existing_csv_expected_outputs_remain_verifiable(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    frame = pd.DataFrame(
+        {
+            "signal": np.array([1.0, 2.0, 3.0], dtype=float),
+            "region": ["north", "south", "east"],
+            "skill": ["billing", "technical", "fraud"],
+        }
+    )
+    artifact_dir, _ = _persist_bundle(tmp_path, frame, monkeypatch)
+    expected_joblib_path = artifact_dir / "selected_forecast_bundle_verification_expected.joblib"
+    legacy_expected_path = artifact_dir / "legacy_verification_expected.csv"
+
+    expected_frame = joblib.load(expected_joblib_path)
+    assert isinstance(expected_frame, pd.DataFrame)
+    expected_frame.to_csv(legacy_expected_path, index=False)
+
+    manifest_path = artifact_dir / "selected_forecast_bundle_manifest.json"
+    persisted = json.loads(manifest_path.read_text(encoding="utf-8"))
+    persisted["verification_expected_path"] = str(legacy_expected_path.relative_to(tmp_path))
+    persisted["verification_expected_sha256"] = _sha256(legacy_expected_path)
+    persisted.pop("verification_expected_format", None)
+    manifest_path.write_text(json.dumps(persisted, indent=2) + "\n", encoding="utf-8")
+
+    replay = verify_model_bundle(artifact_dir)
+    assert replay["status"] == "PASS"
+
+
+# END EXACT_BINARY_EXPECTED_OUTPUT_REGRESSION
