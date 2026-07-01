@@ -294,13 +294,8 @@ def _run_pipeline_impl(config: AppConfig) -> dict[str, Any]:
         rcwe_support = np.ones(len(test), dtype=float)
         rcwe_low_support = np.zeros(len(test), dtype=bool)
     selected_test = calibrators[selected_variant].transform(selected_uncalibrated)
-    bundle_verification_rows = min(64, len(test))
-    expected_bundle_forecast = ForecastOutput(
-        selected_test.model_name,
-        selected_test.q10[:bundle_verification_rows],
-        selected_test.q50[:bundle_verification_rows],
-        selected_test.q90[:bundle_verification_rows],
-    )
+    # Replay the exact frozen-test inference batch. GPU kernels may use a different
+    # reduction path for a prefix-sized tensor than for the original full test batch.
     model_bundle_manifest = persist_and_verify_model_bundle(
         output_dir=output_dir,
         selected_variant=selected_variant,
@@ -312,8 +307,8 @@ def _run_pipeline_impl(config: AppConfig) -> dict[str, Any]:
         model=selected_model,
         calibrator=calibrators[selected_variant],
         rcwe=rcwe_objects.get(selected_base_name) if "+rcwe" in selected_variant else None,
-        verification_frame=test.iloc[:bundle_verification_rows].copy(),
-        expected_forecast=expected_bundle_forecast,
+        verification_frame=test.copy(),
+        expected_forecast=selected_test,
     )
 
     _mark(output_dir, "06_frozen_test_predicted")
