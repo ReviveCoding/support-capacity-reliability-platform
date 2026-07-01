@@ -1,0 +1,350 @@
+﻿{
+    "schema_version":  "1.0",
+    "status":  "PASS",
+    "failure_message":  "",
+    "source_commit_expected":  "ef9bcfa162630c35f379c6321e79919a50b64792",
+    "source_commit_observed":  "ef9bcfa162630c35f379c6321e79919a50b64792",
+    "created_utc":  "2026-07-01T15:45:59.0885320Z",
+    "repo_root":  "C:\\Users\\bjw-0\\Downloads\\Amazon10_support-capacity-reliability-platform-github",
+    "docker_server_version":  "29.6.1",
+    "image_tag":  "support-capacity-reliability:docker-qualification-ef9bcfa16263-20260701-154321Z",
+    "image_id":  "sha256:5c37617bc212c8184bd0f3f1a9c65c49963f9f834e4493a202a04066a9f4c67e",
+    "container_name":  "support-capacity-reliability-docker-qualification-20260701-154321Z",
+    "container_id":  "7b49c9f455ee156589903453b7a57c0ed9915681d2df11a9b5f30569b0959745",
+    "container_exit_code":  0,
+    "runtime_contract":  {
+                             "network_mode":  "none",
+                             "capabilities_dropped":  [
+                                                          "ALL"
+                                                      ],
+                             "security_opt":  [
+                                                  "no-new-privileges=true"
+                                              ],
+                             "dockerfile_declares_nonroot_runtime_user":  "appuser"
+                         },
+    "run_summary_path":  "C:\\Users\\bjw-0\\Downloads\\Amazon10_support-capacity-reliability-platform-github\\outputs\\docker_qualification\\docker-20260701-154321Z\\container_outputs\\outputs\\smoke\\run_summary.json",
+    "release_gate_path":  "C:\\Users\\bjw-0\\Downloads\\Amazon10_support-capacity-reliability-platform-github\\outputs\\docker_qualification\\docker-20260701-154321Z\\container_outputs\\outputs\\smoke\\reports\\release_gate_decision.json",
+    "release_status":  "PASS_WITH_RECOURSE",
+    "artifact_hashes":  [
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\artifact_index.json",
+                                "bytes":  7845,
+                                "sha256":  "e8e0b2b7571ab1203860299a182bea27491c602a99c2229e88c49e67ad0c71c6"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\artifacts\\selected_forecast_bundle.joblib",
+                                "bytes":  889904,
+                                "sha256":  "436e5b1ba39d56418bc0efa0b496cfcfd7c964c61c2c4ffbf20d9b9be6be9382"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\artifacts\\selected_forecast_bundle_manifest.json",
+                                "bytes":  1038,
+                                "sha256":  "5193e557618d8cc8c19bb0923c7f75b27dd7921c167de8d21b8a97db375b0135"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\artifacts\\selected_forecast_bundle_verification_expected.joblib",
+                                "bytes":  30523,
+                                "sha256":  "1bce9fb26a5d29cc31c00ce0753056dcc65f23314fd3ef5fbabc9ff40fad72c2"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\artifacts\\selected_forecast_bundle_verification_input.joblib",
+                                "bytes":  116857,
+                                "sha256":  "606bff75792f4dd22c4fdab62c93b900e5dff40f2e8a7538daa6a9cac8ede454"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\data\\agents.csv",
+                                "bytes":  4646,
+                                "sha256":  "a4416d7844366239c83b5e7e8ae313e04a83aff1645892a493132e754a115fab"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\data\\contacts.csv",
+                                "bytes":  6099687,
+                                "sha256":  "21306493a21c5587c7a8dbf7fb901a4b076ff9df820878769906dd71a7c6e1f9"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\data\\events.csv",
+                                "bytes":  31164,
+                                "sha256":  "06c1d9a65c8fa0536eaa38e68b764f91307b36fcdb41d27af07609093000e681"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\data\\intervals.csv",
+                                "bytes":  1657210,
+                                "sha256":  "149a99eeae78fe852781163bbf013ed1801189b9768bd79e9d06a8bfee22b9c2"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\hardware_profile.json",
+                                "bytes":  375,
+                                "sha256":  "713e8b1448893ca15e556505a3d63a4c415259dd0a36f5d2d51a739fc2657f4c"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\aggregate_scenarios.csv",
+                                "bytes":  106965,
+                                "sha256":  "d9c585caeb71a3a7a308b724cdf52153aab4708c2d488986185285b1c713a6bd"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\coherent_leaf_scenarios.npy",
+                                "bytes":  36992,
+                                "sha256":  "4ba3d39bc1df8d622ca7020693c65fa6b1ba5e91ba0feb27b167be1182a173f2"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\decision_diagnostics.json",
+                                "bytes":  1851,
+                                "sha256":  "a55c1aea3be0e859ccd1cd9ca3fb8026cb9d08b3d1f728eb99c191f1e07d6851"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\fixed_origin_predictions.csv",
+                                "bytes":  20664,
+                                "sha256":  "c2b06b473e1f7855a1bad06e8310de327ac7df9d6fed0ada3cbb7773bf5e196c"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\frozen_test_metrics.csv",
+                                "bytes":  1610,
+                                "sha256":  "95de117e791cf9b4081620ad313e52b608daaea52be565eb02ba60985f186e5b"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\frozen_test_predictions.csv",
+                                "bytes":  203383,
+                                "sha256":  "33ac8e8a12809ba696dbdac01f2df2b80d60453c196ebcbd7060d8ece726ed1e"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\intraday_recourse_actions.csv",
+                                "bytes":  602,
+                                "sha256":  "2dad4fcc0ef2c792cd0d6fda50ea95d3d0cf5cfa6919e8b90b018c577204f8f5"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\monitoring_metrics.csv",
+                                "bytes":  767,
+                                "sha256":  "3b40e9a8258a431b5afa7d27914fa31d828d1c3a382b0f4aceabc9c9182f345b"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\monitoring_snapshot.json",
+                                "bytes":  547,
+                                "sha256":  "ab2fb608e1c3f060e189036f93078784e3e06866e866e41e49041de65799ae02"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\offered_load_ablation.json",
+                                "bytes":  486,
+                                "sha256":  "e42503494063b7745ed01b9339a513532522253b24d663e49547d4c03ea660bc"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\policy_comparison.csv",
+                                "bytes":  2566,
+                                "sha256":  "b528c63bc81807ba25ff3bf5444053338c7a2d44166c8d4df24c0f82a432116f"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\policy_selection_replay.csv",
+                                "bytes":  1963,
+                                "sha256":  "f73af2304174cdb91681f0e825fc0fa2b8c6bd5de9c39aa4d88d8a88992eafab"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\policy_selection_replay_base.csv",
+                                "bytes":  1835,
+                                "sha256":  "81bce0c360bd63bf91aece1c25c2fac7a367f304090a95384922e0b12e353282"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\realized_required_coverage.json",
+                                "bytes":  143,
+                                "sha256":  "6d73e42c09f5d9a26f3c40376a168039f7a9b6fed333b44f626c10334e21b61d"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\scenario_aht_multipliers.npy",
+                                "bytes":  18560,
+                                "sha256":  "7346d42c2d413f2885e42533907e61b7b2cd5887fa05d842e740283245a2c7bd"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\scenario_diagnostics.json",
+                                "bytes":  1722,
+                                "sha256":  "5d13657b69c9ca5e43a2ed375aae9d3d5b184811a23c77fac3495d29508048b2"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\scenario_patience_multipliers.npy",
+                                "bytes":  18560,
+                                "sha256":  "226715a622375be052f6b7dcdda43942da1e5fb91f292d5e88208aa2e788f28f"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\scenario_shrinkage_rates.npy",
+                                "bytes":  18560,
+                                "sha256":  "3478f4f9cf9f6526b3fcded730838dc3feadc3ecdb251f469aec634176beaa31"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\selected_agent_schedule.csv",
+                                "bytes":  2429,
+                                "sha256":  "0ec708e32fea76febba92043adb7cac9c9979b46d0b1fee912a45361dadc489f"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\selected_agent_schedule_pre_recourse.csv",
+                                "bytes":  2397,
+                                "sha256":  "58486eb8c4724d6feb6c7c31c44b59f334395c6c104212fb9103fd3eddc20476"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\selected_required_coverage.json",
+                                "bytes":  143,
+                                "sha256":  "9350fbb9768fc0930c09daa1a3921df603a8ec6cfaaf1d2293445f6891f75bb4"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\slice_metrics.csv",
+                                "bytes":  549,
+                                "sha256":  "ccfcd37034892756daba3f330a5543aec735c0795b36d88d31e56b83315427c3"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\strategic_capacity_plan.csv",
+                                "bytes":  250,
+                                "sha256":  "82924029eec052969909904e36c076d6a899a11e3d22c9694636ff8e10d5ff06"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\strategic_tactical_bridge.csv",
+                                "bytes":  309,
+                                "sha256":  "4205c5425321df411927e4e4c7b1a086c9ba62389ba0392c8a5f9d8de7b1e627"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\metrics\\validation_leaderboard.csv",
+                                "bytes":  1859,
+                                "sha256":  "7759e9920d53bc732ea2e2369faeb3eaffe428b9b1a039bc687cad5d500b0470"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\decision_memo.md",
+                                "bytes":  8319,
+                                "sha256":  "14c2eeaf599da521e23eb3b78c32ab4f9d55960ef1a5fe6fa8a3159ab6a8a428"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\digital_twin_card.md",
+                                "bytes":  689,
+                                "sha256":  "da916a96406c43dbf5eb6d7e457cd21c016b43adcbf4f1e7f4de68dd5499e8f5"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\intraday_recourse_report.md",
+                                "bytes":  1570,
+                                "sha256":  "38a9e3e8e0725c1b13cfdd669e151904b4783d45890d8c7c676e0c540dc6add2"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\limitations.md",
+                                "bytes":  847,
+                                "sha256":  "6b58f8a54eaa5881e96e920ee2b0fb4f872b3736510d57726901ee44710fd5c8"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\model_card.md",
+                                "bytes":  858,
+                                "sha256":  "74e8fb75c71135553e544e786aace07a0ccc239fd539acabf5cce00885171ec4"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\model_selection_report.md",
+                                "bytes":  4820,
+                                "sha256":  "77d140df911dd794915cf78033c8f4ac604b12fd2d4a1feb96faa988f120018f"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\release_gate_decision.json",
+                                "bytes":  4124,
+                                "sha256":  "172f2dbeccaf7d1fcd49dcf644119ceec6f893feabe4a2cff27b4f8bd0096e8f"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\reports\\validation_report.md",
+                                "bytes":  5823,
+                                "sha256":  "a17e30fb1c00858f38fc4bb38c0c96a652f0b96ef2de0fbdb263c5446427905f"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\run_manifest.json",
+                                "bytes":  737,
+                                "sha256":  "a4886afdf00f74bca7cac616418d0c40342ad139d1334891a77ff9a4f15a9779"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\run_summary.json",
+                                "bytes":  7675,
+                                "sha256":  "4706bdf7659fee930c79f3036d2d474060641f3f26645e1c34838fc281a5ab0b"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\split_manifest.json",
+                                "bytes":  470,
+                                "sha256":  "82a2e392e7202feac6c7cd3cac7645827bccc1cd24e100810625f3c5279e07a3"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\stage.log",
+                                "bytes":  264,
+                                "sha256":  "04c82f8f1515ef2097c7a5d2a5ae75835a0d132db9905e3528743ad48ae0cef0"
+                            },
+                            {
+                                "relative_path":  "container_outputs\\outputs\\smoke\\stage_timing.jsonl",
+                                "bytes":  1596,
+                                "sha256":  "e7e70cea0891f62e664cea4a4e5e8151c0387c8b69c1765237ada39b4ae503a8"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_build.stderr.log",
+                                "bytes":  20333,
+                                "sha256":  "3375781f7d031ae2223cc1c1a83cfa16e0c381f6e0b9d4629557c870d225d4b5"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_build.stdout.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_container_inspect_after.stderr.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_container_inspect_after.stdout.log",
+                                "bytes":  7422,
+                                "sha256":  "b80e829e0a7b43cb9c39c6d4f23563657fd2c462b0f1829a2e1df53a21ccc98a"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_container_inspect_before.stderr.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_container_inspect_before.stdout.log",
+                                "bytes":  6876,
+                                "sha256":  "d6a9abefc434c93dc72930b19d3339f13681e89527357d92a87433b80e567197"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_cp_outputs.stderr.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_cp_outputs.stdout.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_create.stderr.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_create.stdout.log",
+                                "bytes":  65,
+                                "sha256":  "f9b9021c737e902d198378ae2c92b92526f0f5c67d3af872fed70c3663231740"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_image_inspect.stderr.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_image_inspect.stdout.log",
+                                "bytes":  3093,
+                                "sha256":  "1f2b8ce9351a7ca500a54705df384fab766cf2ed4c4c40f42be4cf085d31fa64"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_server_version.stderr.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_server_version.stdout.log",
+                                "bytes":  7,
+                                "sha256":  "10bd0be4ba4a5b28b88fff045d67fa0a0e991f084b44969d1eae657dbb4bee96"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_start_attach.stderr.log",
+                                "bytes":  0,
+                                "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                            },
+                            {
+                                "relative_path":  "logs\\docker_start_attach.stdout.log",
+                                "bytes":  7676,
+                                "sha256":  "3eafd877ec54efc588d4a376fe5a687b62c37572c200b2ba30a785097da62037"
+                            }
+                        ]
+}

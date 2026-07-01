@@ -1,0 +1,145 @@
+{
+    "schema_version":  "1.0",
+    "source_commit":  "ef9bcfa162630c35f379c6321e79919a50b64792",
+    "package_relative_root":  "docs/validation/microshift_fullscale_20260701",
+    "harvested_utc":  "2026-07-01T17:44:17.8164091Z",
+    "docker_requalification":  {
+                                   "status":  "PASS",
+                                   "source_commit_expected":  "ef9bcfa162630c35f379c6321e79919a50b64792",
+                                   "source_commit_observed":  "ef9bcfa162630c35f379c6321e79919a50b64792",
+                                   "release_status":  "PASS_WITH_RECOURSE",
+                                   "container_exit_code":  0,
+                                   "image_id":  "sha256:5c37617bc212c8184bd0f3f1a9c65c49963f9f834e4493a202a04066a9f4c67e"
+                               },
+    "fullscale_confirmation":  {
+                                   "status":  "PASS",
+                                   "artifact_identity_exact":  true,
+                                   "policy_fixed_all_noncompensatory_not_worse":  true,
+                                   "selected_system_all_noncompensatory_not_worse":  true,
+                                   "legacy_hard_violations":  61,
+                                   "microshift_hard_violations":  18,
+                                   "legacy_schedule_feasibility":  0.5986842105263158,
+                                   "microshift_schedule_feasibility":  0.9203539823008849
+                               },
+    "artifacts":  [
+                      {
+                          "label":  "docker_qualification_manifest",
+                          "origin":  "docker_requalification",
+                          "relative_path":  "docker/docker_qualification_manifest.json",
+                          "bytes":  23550,
+                          "sha256":  "b64eedcaa4f9f91e864abc86ca1fc5f2cbeea8bc9bb1d3a68eba0726bc473c14"
+                      },
+                      {
+                          "label":  "frozen_baseline_lightgbm_config",
+                          "origin":  "prior_frozen_benchmark",
+                          "relative_path":  "frozen_geometry/baseline_lightgbm.yaml",
+                          "bytes":  2201,
+                          "sha256":  "fed23cb8e8bb938225c06319904e48d4d0899bfdce4cdf408ad5f1731d689957"
+                      },
+                      {
+                          "label":  "frozen_torch_quantile_config",
+                          "origin":  "prior_frozen_benchmark",
+                          "relative_path":  "frozen_geometry/torch_quantile_cuda.yaml",
+                          "bytes":  2211,
+                          "sha256":  "9eb34f4d6ec96f7359597916a1934a93b3fbc64726ae260709a42c3875040e8f"
+                      },
+                      {
+                          "label":  "frozen_gpu_benchmark_report_json",
+                          "origin":  "prior_frozen_benchmark",
+                          "relative_path":  "frozen_geometry/gpu_torch_frozen_benchmark_final.json",
+                          "bytes":  5375,
+                          "sha256":  "9f7b41ddd1b29d9fb46ae20ce4123781ddc7636576774b031330f5ab18548f0b"
+                      },
+                      {
+                          "label":  "frozen_gpu_benchmark_report_markdown",
+                          "origin":  "prior_frozen_benchmark",
+                          "relative_path":  "frozen_geometry/GPU_TORCH_FROZEN_BENCHMARK_REPORT.md",
+                          "bytes":  11120,
+                          "sha256":  "20bb283d49f0a37b71a04e9fc07976e705df9022697e8690d5594224a8246035"
+                      },
+                      {
+                          "label":  "legacy_two_shift_config",
+                          "origin":  "fullscale_legacy",
+                          "relative_path":  "fullscale/legacy_two_shift.yaml",
+                          "bytes":  2337,
+                          "sha256":  "52a132661187a06fc1118ca569ada42c341b91c7e539136998d2d4bb06acb076"
+                      },
+                      {
+                          "label":  "microshift_6h_config",
+                          "origin":  "fullscale_microshift",
+                          "relative_path":  "fullscale/microshift_6h.yaml",
+                          "bytes":  2352,
+                          "sha256":  "d4366b3edfc1f215365084bb2a17a7f9db37ee453fcd429a2be503649b6f48e3"
+                      },
+                      {
+                          "label":  "fullscale_confirmation_report_json",
+                          "origin":  "fullscale_microshift",
+                          "relative_path":  "fullscale/fullscale_microshift_confirmation.json",
+                          "bytes":  11051,
+                          "sha256":  "0e8a1f4fa03dabee45b5545000af5f5bf7e8f1dbeb1199e090a1b569184d2c86"
+                      },
+                      {
+                          "label":  "fullscale_confirmation_report_markdown",
+                          "origin":  "fullscale_microshift",
+                          "relative_path":  "fullscale/FULLSCALE_MICROSHIFT_CONFIRMATION.md",
+                          "bytes":  1056,
+                          "sha256":  "9941748c497315b4ef80b5c23b8334300cefbe549e70710c9ca0c1b0c7f7b566"
+                      },
+                      {
+                          "label":  "legacy_run_summary",
+                          "origin":  "fullscale_legacy",
+                          "relative_path":  "fullscale/legacy_run_summary.json",
+                          "bytes":  8071,
+                          "sha256":  "d7bc36d74cafbcf9812519e8e4b1b4916ff40e78ed70c730514f205d21ba8838"
+                      },
+                      {
+                          "label":  "microshift_run_summary",
+                          "origin":  "fullscale_microshift",
+                          "relative_path":  "fullscale/microshift_run_summary.json",
+                          "bytes":  7944,
+                          "sha256":  "0fb2e26f7cf1c3a5efc4d6125c867de2e5dd1747bf9a70ebe281359334a13131"
+                      },
+                      {
+                          "label":  "legacy_policy_selection_replay",
+                          "origin":  "fullscale_legacy",
+                          "relative_path":  "fullscale/legacy_policy_selection_replay.csv",
+                          "bytes":  2065,
+                          "sha256":  "221b6ba3af1a93b3c400b1ad7a2e368b4ab4660ef9a9b6038562ae00288445fa"
+                      },
+                      {
+                          "label":  "microshift_policy_selection_replay",
+                          "origin":  "fullscale_microshift",
+                          "relative_path":  "fullscale/microshift_policy_selection_replay.csv",
+                          "bytes":  2131,
+                          "sha256":  "8355d46e6a425267854a634e9232d5fe3f9e03f2660da2c22f59ce373586235f"
+                      },
+                      {
+                          "label":  "legacy_selected_agent_schedule",
+                          "origin":  "fullscale_legacy",
+                          "relative_path":  "fullscale/legacy_selected_agent_schedule.csv",
+                          "bytes":  6787,
+                          "sha256":  "b897de82cd9f83962d4cfb2f185496440ccb60944eb670c770658a4d1bfd6b7f"
+                      },
+                      {
+                          "label":  "microshift_selected_agent_schedule",
+                          "origin":  "fullscale_microshift",
+                          "relative_path":  "fullscale/microshift_selected_agent_schedule.csv",
+                          "bytes":  14560,
+                          "sha256":  "6e256ced98229dcfad4af01d9ba08ff70068dd7af2866eeaaffcb9cce98112e3"
+                      },
+                      {
+                          "label":  "legacy_release_gate_decision",
+                          "origin":  "fullscale_legacy",
+                          "relative_path":  "fullscale/legacy_release_gate_decision.json",
+                          "bytes":  4286,
+                          "sha256":  "cea2e5a6755e98619c3a9c36d76992706fc4eb24f20d7b8625a526748fdfaa00"
+                      },
+                      {
+                          "label":  "microshift_release_gate_decision",
+                          "origin":  "fullscale_microshift",
+                          "relative_path":  "fullscale/microshift_release_gate_decision.json",
+                          "bytes":  4270,
+                          "sha256":  "64bae359b0e58573b35e080b4ecdec4ba54eceba2f166cf4c41cd5d4d71fbfe9"
+                      }
+                  ]
+}

@@ -1,0 +1,256 @@
+{
+  "artifact_identity": {
+    "all_exact_match": true,
+    "artifacts": {
+      "data/agents.csv": {
+        "exact_match": true,
+        "legacy_sha256": "dd0bae11b49363fb6d57795063831a97a4740876e6f064c767ed7925378fe0f6",
+        "microshift_sha256": "dd0bae11b49363fb6d57795063831a97a4740876e6f064c767ed7925378fe0f6"
+      },
+      "data/intervals.csv": {
+        "exact_match": true,
+        "legacy_sha256": "25f00da6f2b0d7a980808c8b98fc54ae9280e395116da31e8450817c3b64fef0",
+        "microshift_sha256": "25f00da6f2b0d7a980808c8b98fc54ae9280e395116da31e8450817c3b64fef0"
+      },
+      "metrics/fixed_origin_predictions.csv": {
+        "exact_match": true,
+        "legacy_sha256": "5da6ed2330a853be0af0d57e6a4be35559ffcb55871c4c1bf0eca58b09ea89b9",
+        "microshift_sha256": "5da6ed2330a853be0af0d57e6a4be35559ffcb55871c4c1bf0eca58b09ea89b9"
+      },
+      "metrics/frozen_test_predictions.csv": {
+        "exact_match": true,
+        "legacy_sha256": "e51dc7b9b73dbb0a733f3c5effa14e6644cef8707a24c68a126c3ae7152e0036",
+        "microshift_sha256": "e51dc7b9b73dbb0a733f3c5effa14e6644cef8707a24c68a126c3ae7152e0036"
+      },
+      "split_manifest.json": {
+        "exact_match": true,
+        "legacy_sha256": "b7f196902fbf5d409ca247efe2ea9c5dc61e7b6420c27c277712e72d76524ba8",
+        "microshift_sha256": "b7f196902fbf5d409ca247efe2ea9c5dc61e7b6420c27c277712e72d76524ba8"
+      }
+    }
+  },
+  "claim_boundary": "Offline synthetic operational replay only; it is not production contact-center validation or release approval.",
+  "frozen_geometry": {
+    "base_config_path": "C:\\a10x\\gb\\gpu-torch-frozen-20260630-231656\\configs\\baseline_lightgbm.yaml",
+    "base_config_sha256": "fed23cb8e8bb938225c06319904e48d4d0899bfdce4cdf408ad5f1731d689957",
+    "settings": {
+      "data.agents": 120,
+      "data.days": 180,
+      "data.interval_minutes": 30,
+      "forecast.chronos.enabled": false,
+      "forecast.horizon_intervals": 336,
+      "forecast.models": [
+        "lightgbm"
+      ],
+      "project.seed": 2026,
+      "queue.policy_tuning_replications": 4,
+      "queue.replications": 20,
+      "queue.simulation_hours": 24,
+      "rcwe.enabled": true,
+      "scenarios.count": 250
+    }
+  },
+  "legacy_reused": {
+    "legacy_root": "C:\\a10x\\gb\\microshift-fullscale-confirmation-20260701-160241Z\\results\\legacy_two_shift",
+    "legacy_run_summary_sha256": "d7bc36d74cafbcf9812519e8e4b1b4916ff40e78ed70c730514f205d21ba8838"
+  },
+  "paired_config_contract": {
+    "legacy_config_path": "C:\\a10x\\gb\\microshift-fullscale-confirmation-20260701-160241Z\\configs\\legacy_two_shift.yaml",
+    "legacy_shift_duration_hours": 12.0,
+    "microshift_config_path": "C:\\a10x\\gb\\microshift-fullscale-resume-20260701-165241Z\\configs\\microshift_6h.yaml",
+    "microshift_shift_duration_hours": 6.0,
+    "only_shift_duration_differs": true
+  },
+  "policy_fixed_comparison": {
+    "all_noncompensatory_not_worse": true,
+    "available_common_base_policies": [
+      "fixed_ratio",
+      "point_forecast",
+      "probabilistic_safety"
+    ],
+    "deltas": {
+      "policy_fixed_abandonment_rate_ucb95_micro_minus_legacy": -0.04346160079011628,
+      "policy_fixed_hard_violations_micro_minus_legacy": -19.0,
+      "policy_fixed_p95_wait_seconds_ucb95_micro_minus_legacy": -83.34346127803641,
+      "policy_fixed_schedule_feasibility_micro_minus_legacy": 0.21486049926578565,
+      "policy_fixed_service_level_lcb95_micro_minus_legacy": 0.07224768390791547,
+      "policy_fixed_total_cost_micro_minus_legacy": -5506.999999999993
+    },
+    "fixed_base_policy": "probabilistic_safety",
+    "legacy": {
+      "abandoned": 396,
+      "abandonment_penalty": 13842.5,
+      "abandonment_rate": 0.1245669291338582,
+      "abandonment_rate_std": 0.0036048891786644,
+      "abandonment_rate_ucb95": 0.1288087363236491,
+      "assigned_agent_shifts": 92,
+      "average_wait_seconds": 19.988296490390454,
+      "deployed_policy": "probabilistic_safety+intraday_recourse",
+      "eligible_for_selection": false,
+      "flow_conservation": true,
+      "hard_violations": 58,
+      "labor_cost": 37862.76,
+      "offered": 3175,
+      "p95_wait_seconds": 147.88396048541904,
+      "p95_wait_seconds_std": 8.905141657857182,
+      "p95_wait_seconds_ucb95": 158.36247786508483,
+      "policy": "probabilistic_safety+intraday_recourse",
+      "recourse_action_rate": 0.0108695652173913,
+      "recourse_applied_action_count": 1,
+      "recourse_cost_share": 0.0,
+      "recourse_positive_cost": 0.0,
+      "recourse_remaining_hard_violations": 58,
+      "replications": 4,
+      "schedule_feasibility": 0.6133333333333333,
+      "selected_for_frozen_evaluation": true,
+      "served": 2780,
+      "service_level": 0.8167716535433072,
+      "service_level_answered": 0.9329967832768846,
+      "service_level_lcb95": 0.8112632022090622,
+      "service_level_std": 0.0046813435211792,
+      "service_penalty": 0.0,
+      "total_cost": 62145.26,
+      "total_cost_std": 400.5933099790859,
+      "total_cost_ucb95": 62616.63082396551,
+      "utilization": 0.4497448659917334
+    },
+    "microshift": {
+      "abandoned": 266,
+      "abandonment_penalty": 9292.5,
+      "abandonment_rate": 0.0836220472440944,
+      "abandonment_rate_std": 0.0014660619468523,
+      "abandonment_rate_ucb95": 0.0853471355335328,
+      "assigned_agent_shifts": 195,
+      "average_wait_seconds": 9.62668352961802,
+      "deployed_policy": "probabilistic_safety+intraday_recourse",
+      "eligible_for_selection": false,
+      "flow_conservation": true,
+      "hard_violations": 39,
+      "labor_cost": 40325.76000000001,
+      "offered": 3175,
+      "p95_wait_seconds": 59.450220175791046,
+      "p95_wait_seconds_std": 13.231102498682626,
+      "p95_wait_seconds_ucb95": 75.01901658704841,
+      "policy": "probabilistic_safety+intraday_recourse",
+      "recourse_action_rate": 0.1320754716981132,
+      "recourse_applied_action_count": 28,
+      "recourse_cost_share": 0.0266018544969766,
+      "recourse_positive_cost": 1072.74,
+      "recourse_remaining_hard_violations": 39,
+      "replications": 4,
+      "schedule_feasibility": 0.8281938325991189,
+      "selected_for_frozen_evaluation": false,
+      "served": 2910,
+      "service_level": 0.8881889763779527,
+      "service_level_answered": 0.969235780702397,
+      "service_level_lcb95": 0.8835108861169777,
+      "service_level_std": 0.0039756632501336,
+      "service_penalty": 0.0,
+      "total_cost": 56638.26000000001,
+      "total_cost_std": 162.91613384397098,
+      "total_cost_ucb95": 56829.96043616385,
+      "utilization": 0.4942898805969272
+    },
+    "noncompensatory_checks": {
+      "policy_fixed_abandonment_rate_ucb95_not_worse": true,
+      "policy_fixed_hard_violations_not_worse": true,
+      "policy_fixed_p95_wait_seconds_ucb95_not_worse": true,
+      "policy_fixed_schedule_feasibility_not_worse": true,
+      "policy_fixed_service_level_lcb95_not_worse": true,
+      "policy_fixed_total_cost_not_worse": true
+    }
+  },
+  "run_outputs": {
+    "legacy": "C:\\a10x\\gb\\microshift-fullscale-confirmation-20260701-160241Z\\results\\legacy_two_shift",
+    "microshift": "C:\\a10x\\gb\\microshift-fullscale-resume-20260701-165241Z\\results\\microshift_6h"
+  },
+  "schedule_contract": {
+    "legacy": {
+      "assigned_schedule_rows": 91,
+      "availability_band_violations": 0,
+      "concrete_shifts": [
+        "early",
+        "late"
+      ],
+      "hour_budget_violations": 0,
+      "max_assigned_shifts_per_agent": 1,
+      "non_overtime_multi_shift_violations": 0,
+      "recourse_action_units": 5,
+      "shift_duration_hours": 12.0
+    },
+    "microshift": {
+      "assigned_schedule_rows": 210,
+      "availability_band_violations": 0,
+      "concrete_shifts": [
+        "early_1",
+        "early_2",
+        "late_1",
+        "late_2"
+      ],
+      "hour_budget_violations": 0,
+      "max_assigned_shifts_per_agent": 2,
+      "non_overtime_multi_shift_violations": 0,
+      "recourse_action_units": 11,
+      "shift_duration_hours": 6.0
+    }
+  },
+  "schema_version": "1.0",
+  "scope": "resumed matched full-scale 24-hour synthetic replay, using completed legacy 12-hour evidence and a new 6-hour microshift execution on the same frozen LightGBM configuration",
+  "selected_system_comparison": {
+    "all_noncompensatory_not_worse": true,
+    "deltas": {
+      "selected_system_abandonment_rate_ucb95_micro_minus_legacy": -0.12511776040937933,
+      "selected_system_hard_violations_micro_minus_legacy": -43.0,
+      "selected_system_p95_wait_seconds_ucb95_micro_minus_legacy": -168.88097506238944,
+      "selected_system_schedule_feasibility_micro_minus_legacy": 0.3216697717745691,
+      "selected_system_service_level_lcb95_micro_minus_legacy": 0.19047163236267273,
+      "selected_system_total_cost_micro_minus_legacy": -18638.01000000001
+    },
+    "legacy": {
+      "abandonment_rate_ucb95": 0.14233469646860802,
+      "deployed_policy": "probabilistic_safety+intraday_recourse",
+      "eligible_for_release": null,
+      "flow_conservation": true,
+      "hard_violations": 61,
+      "intraday_recourse_actions": 5,
+      "p95_wait_seconds_ucb95": 171.4525183654173,
+      "recourse_remaining_hard_violations": 61,
+      "release_status": "ITERATE",
+      "schedule_feasibility": 0.5986842105263158,
+      "selected_policy": "probabilistic_safety+intraday_recourse",
+      "selected_policy_from_replay": "probabilistic_safety",
+      "selected_variant": "lightgbm",
+      "service_level_lcb95": 0.7856309034279877,
+      "total_cost": 67367.01000000001,
+      "total_cost_ucb95": 67828.10219899112
+    },
+    "microshift": {
+      "abandonment_rate_ucb95": 0.017216936059228697,
+      "deployed_policy": "point_forecast+intraday_recourse",
+      "eligible_for_release": null,
+      "flow_conservation": true,
+      "hard_violations": 18,
+      "intraday_recourse_actions": 11,
+      "p95_wait_seconds_ucb95": 2.5715433030278643,
+      "recourse_remaining_hard_violations": 18,
+      "release_status": "ITERATE",
+      "schedule_feasibility": 0.9203539823008849,
+      "selected_policy": "point_forecast+intraday_recourse",
+      "selected_policy_from_replay": "point_forecast",
+      "selected_variant": "lightgbm",
+      "service_level_lcb95": 0.9761025357906604,
+      "total_cost": 48729.0,
+      "total_cost_ucb95": 48788.31315560652
+    },
+    "noncompensatory_checks": {
+      "selected_system_abandonment_rate_ucb95_not_worse": true,
+      "selected_system_hard_violations_not_worse": true,
+      "selected_system_p95_wait_seconds_ucb95_not_worse": true,
+      "selected_system_schedule_feasibility_not_worse": true,
+      "selected_system_service_level_lcb95_not_worse": true,
+      "selected_system_total_cost_not_worse": true
+    }
+  },
+  "source_commit": "ef9bcfa162630c35f379c6321e79919a50b64792",
+  "status": "PASS"
+}

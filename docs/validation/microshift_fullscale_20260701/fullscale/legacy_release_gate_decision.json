@@ -1,0 +1,138 @@
+{
+  "checks": [
+    {
+      "detail": "Absolute error from the nominal 80% interval coverage.",
+      "name": "interval_coverage_error",
+      "observed": 0.01971153846153839,
+      "passed": true,
+      "threshold": 0.08
+    },
+    {
+      "detail": "Worst supported regime-level WAPE.",
+      "name": "worst_slice_wape",
+      "observed": 0.39512736030195933,
+      "passed": true,
+      "threshold": 0.45
+    },
+    {
+      "detail": "Minimum sample count required for the peak-tail coverage check.",
+      "name": "peak_sample_count",
+      "observed": 1572,
+      "passed": true,
+      "threshold": 10
+    },
+    {
+      "detail": "Minimum incident sample count required before incident coverage can pass.",
+      "name": "incident_sample_count",
+      "observed": 0,
+      "passed": false,
+      "threshold": 5
+    },
+    {
+      "detail": "Q90 coverage on observations above the training-period 90th-percentile load.",
+      "name": "peak_q90_coverage",
+      "observed": 0.8276081424936387,
+      "passed": true,
+      "threshold": 0.65
+    },
+    {
+      "detail": "Q90 coverage on incident-regime observations; insufficient incident evidence fails through the separate sample-count gate.",
+      "name": "incident_q90_coverage",
+      "observed": 0.0,
+      "passed": false,
+      "threshold": 0.8
+    },
+    {
+      "detail": "Frozen fixed-origin recursive forecast WAPE.",
+      "name": "fixed_origin_wape",
+      "observed": 0.364501451863392,
+      "passed": true,
+      "threshold": 0.45
+    },
+    {
+      "detail": "Absolute coverage error for the fixed-origin recursive decision forecast.",
+      "name": "fixed_origin_coverage_error",
+      "observed": 0.022656250000000044,
+      "passed": true,
+      "threshold": 0.15
+    },
+    {
+      "detail": "Maximum aggregation mismatch between leaf scenarios and global totals.",
+      "name": "scenario_coherence",
+      "observed": 0.0,
+      "passed": true,
+      "threshold": 1e-08
+    },
+    {
+      "detail": "Strategic capacity optimization must return a successful solver result.",
+      "name": "capacity_plan_success",
+      "observed": "True",
+      "passed": true,
+      "threshold": "True"
+    },
+    {
+      "detail": "Share of tactical shift-skill coverage supported by strategic capacity units.",
+      "name": "strategic_tactical_alignment",
+      "observed": 0.8761904761904762,
+      "passed": false,
+      "threshold": 1.0
+    },
+    {
+      "detail": "Fraction of required coverage constraints satisfied without hard violations.",
+      "name": "schedule_feasibility",
+      "observed": 0.5986842105263158,
+      "passed": false,
+      "threshold": 1.0
+    },
+    {
+      "detail": "95% upper confidence bound for simulated abandonment.",
+      "name": "abandonment_rate",
+      "observed": 0.14233469646860802,
+      "passed": true,
+      "threshold": 0.15
+    },
+    {
+      "detail": "95% lower confidence bound for offered-contact service level.",
+      "name": "service_level_lcb95",
+      "observed": 0.7856309034279877,
+      "passed": false,
+      "threshold": 0.8
+    },
+    {
+      "detail": "95% upper confidence bound for simulated p95 queue waiting time.",
+      "name": "p95_wait_seconds_ucb95",
+      "observed": 171.4525183654173,
+      "passed": true,
+      "threshold": 600.0
+    },
+    {
+      "detail": "Remaining post-recourse shift-skill coverage violations.",
+      "name": "hard_violations",
+      "observed": 61,
+      "passed": false,
+      "threshold": 0
+    },
+    {
+      "detail": "Applied schedule-repair actions divided by pre-recourse assigned shifts.",
+      "name": "recourse_action_rate",
+      "observed": 0.05434782608695652,
+      "passed": true,
+      "threshold": 0.4
+    },
+    {
+      "detail": "Positive recourse labor cost divided by deployed labor cost.",
+      "name": "recourse_cost_share",
+      "observed": 0.022254722808050614,
+      "passed": true,
+      "threshold": 0.4
+    },
+    {
+      "detail": "All queue replications must satisfy served + abandoned = offered.",
+      "name": "flow_conservation",
+      "observed": "True",
+      "passed": true,
+      "threshold": "True"
+    }
+  ],
+  "status": "ITERATE"
+}

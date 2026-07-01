@@ -1,0 +1,111 @@
+project:
+  name: support-capacity-reliability-fullscale-microshift-6h
+  seed: 2026
+  output_dir: C:\a10x\gb\microshift-fullscale-resume-20260701-165241Z\results\microshift_6h
+data:
+  days: 180
+  interval_minutes: 30
+  regions:
+  - north
+  - south
+  - east
+  - west
+  skills:
+  - billing
+  - technical
+  - account
+  - fraud
+  agents: 120
+  start_date: '2025-01-01'
+  event_days:
+  - 45
+  - 46
+  - 47
+  - 90
+  - 91
+  - 135
+  - 136
+  - 137
+  redial_probability: 0.35
+  recontact_probability: 0.08
+  observed_reach_rate: 0.97
+  save_event_level: true
+forecast:
+  horizon_intervals: 336
+  train_fraction: 0.7
+  calibration_fraction: 0.15
+  target: offered_load_estimate
+  lags:
+  - 1
+  - 2
+  - 48
+  - 96
+  - 336
+  - 672
+  rolling_windows:
+  - 6
+  - 48
+  - 336
+  - 672
+  quantiles:
+  - 0.1
+  - 0.5
+  - 0.9
+  models:
+  - lightgbm
+  torch:
+    epochs: 40
+    hidden_dim: 128
+    batch_size: 512
+    learning_rate: 0.001
+    device: cuda
+  chronos:
+    enabled: false
+    model_id: amazon/chronos-2
+    context_length: 96
+rcwe:
+  enabled: true
+  neighbors: 32
+  blend_strength: 0.4
+  minimum_support: 0.2
+  distance_temperature: 1.0
+  low_support_interval_inflation: 1.35
+scenarios:
+  count: 250
+  correlation_shrinkage: 0.1
+queue:
+  service_level_seconds: 120
+  service_level_target: 0.8
+  abandonment_target: 0.1
+  max_agents_per_pool: 120
+  simulation_hours: 24
+  replications: 20
+  policy_tuning_replications: 4
+  staffing_load_quantile: 0.9
+  shift_duration_hours: 6
+optimization:
+  regular_hourly_cost: 34.0
+  overtime_hourly_cost: 52.0
+  shortage_penalty: 180.0
+  excess_capacity_penalty: 10.0
+  schedule_preference_penalty: 2.0
+  solver_time_limit_seconds: 90
+  shrinkage_buffer: 0.15
+release_gate:
+  max_interval_coverage_error: 0.08
+  max_worst_slice_wape: 0.45
+  min_schedule_feasibility: 1.0
+  max_abandonment_rate: 0.15
+  max_p95_wait_seconds: 600
+  max_fixed_origin_wape: 0.45
+  max_scenario_coherence_error: 1.0e-08
+  require_capacity_plan_success: true
+  min_strategic_tactical_alignment: 1.0
+  max_recourse_action_rate: 0.4
+  max_recourse_cost_share: 0.4
+  min_slice_count_for_wape: 30
+  min_peak_q90_coverage: 0.65
+  min_incident_q90_coverage: 0.8
+  min_peak_sample_count: 10
+  min_incident_sample_count: 5
+  max_hard_violations: 0

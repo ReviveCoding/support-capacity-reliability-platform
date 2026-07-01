@@ -1,0 +1,72 @@
+{
+    "schema_version":  "1.0",
+    "status":  "PASS",
+    "benchmark_identity":  {
+                               "source_commit":  "a9b2e821c72a5c5b1a083cd4b7c2308252d99472",
+                               "run_root":  "C:\\a10x\\gb\\gpu-torch-frozen-20260630-231656",
+                               "baseline_selected_variant":  "lightgbm",
+                               "torch_selected_variant":  "torch_quantile",
+                               "baseline_selected_rcwe_applied":  false,
+                               "torch_selected_rcwe_applied":  false,
+                               "baseline_deployed_policy":  "probabilistic_safety+intraday_recourse",
+                               "torch_deployed_policy":  "point_forecast+intraday_recourse"
+                           },
+    "verification_contract":  {
+                                  "matched_generated_input_sha256":  true,
+                                  "verification_input_format":  "joblib_dataframe_exact_v1",
+                                  "verification_expected_format":  "joblib_forecast_exact_v1",
+                                  "baseline_verification_rows":  19136,
+                                  "torch_verification_rows":  19136,
+                                  "baseline_verification_max_abs_error":  0,
+                                  "torch_verification_max_abs_error":  0,
+                                  "matched_reliability_stack":  true
+                              },
+    "paired_deltas":  {
+                          "forecast_wape_torch_minus_baseline":  -0.0010574514893046949,
+                          "forecast_wape_relative_percent":  -0.32504617384916445,
+                          "forecast_rmse_torch_minus_baseline":  -0.0065046242104349616,
+                          "forecast_rmse_relative_percent":  -0.27185247758512326,
+                          "forecast_coverage_error_torch_minus_baseline":  0.009563127090301049,
+                          "decision_total_cost_torch_minus_baseline":  -2103,
+                          "decision_total_cost_relative_percent":  -3.1217060101079146,
+                          "decision_service_level_lcb95_torch_minus_baseline":  0.016688495041038975,
+                          "decision_p95_wait_seconds_ucb95_torch_minus_baseline":  -22.604099120850407,
+                          "decision_abandonment_rate_ucb95_torch_minus_baseline":  0.00082957359825261423,
+                          "decision_schedule_feasibility_torch_minus_baseline":  0.0065789473684210176,
+                          "decision_hard_violations_torch_minus_baseline":  -1
+                      },
+    "criteria":  {
+                     "matched_generated_input":  true,
+                     "exact_binary_bundle_contract":  true,
+                     "exact_bundle_replay":  true,
+                     "matched_reliability_stack":  true,
+                     "torch_forecast_wape_not_worse":  true,
+                     "torch_total_cost_not_worse":  true,
+                     "torch_service_lcb95_not_worse":  true,
+                     "torch_abandonment_ucb95_not_worse":  false,
+                     "torch_coverage_error_not_worse":  false,
+                     "torch_hard_violations_not_worse":  true,
+                     "torch_release_eligible":  false,
+                     "torch_release_status_pass":  false
+                 },
+    "chronos_gate":  {
+                         "verdict":  "NO_GO",
+                         "standard":  "Conservative gate: exact paired verification plus no regression in forecast WAPE, total cost, service LCB95, abandonment UCB95, coverage error, hard violations, and release eligibility.",
+                         "reasons":  [
+                                         "Torch candidate release_status is \u0027ITERATE\u0027, not PASS.",
+                                         "Torch selected decision is not eligible_for_release.",
+                                         "Torch abandonment_rate_ucb95 increased by 0.000830 relative to LightGBM.",
+                                         "Torch forecast coverage_error increased by 0.009563 relative to LightGBM.",
+                                         "Torch frozen replay retains 60 hard violations."
+                                     ],
+                         "positive_findings":  [
+                                                   "Torch full pipeline, output integrity, and portable bundle replay passed.",
+                                                   "Torch WAPE and RMSE were lower than LightGBM.",
+                                                   "Torch total cost was lower and service LCB95 was higher.",
+                                                   "Torch had fewer hard violations and lower p95 wait UCB95."
+                                               ],
+                         "claim_boundary":  "This verdict concerns whether to spend additional compute on a Chronos comparison. It is not a production release approval. Both evaluated systems are offline synthetic operational replays and remain release_status=ITERATE."
+                     },
+    "baseline_summary_path":  "C:\\a10x\\gb\\gpu-torch-frozen-20260630-231656\\results\\baseline_lightgbm\\run_summary.json",
+    "torch_summary_path":  "C:\\a10x\\gb\\gpu-torch-frozen-20260630-231656\\results\\torch_quantile_cuda\\run_summary.json"
+}

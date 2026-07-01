@@ -1,0 +1,53 @@
+{
+    "schema_version":  "1.0",
+    "prerequisite":  "Commit this package, push it, and confirm hosted workflows before any deletion.",
+    "candidates":  [
+                       {
+                           "logical_name":  "prior_frozen_benchmark_raw_root",
+                           "path":  "C:\\a10x\\gb\\gpu-torch-frozen-20260630-231656",
+                           "exists":  true,
+                           "bytes":  5394294287,
+                           "delete_only_after_evidence_commit_push_and_hosted_check":  true
+                       },
+                       {
+                           "logical_name":  "fullscale_legacy_raw_root",
+                           "path":  "C:\\a10x\\gb\\microshift-fullscale-confirmation-20260701-160241Z",
+                           "exists":  true,
+                           "bytes":  135609429,
+                           "delete_only_after_evidence_commit_push_and_hosted_check":  true
+                       },
+                       {
+                           "logical_name":  "fullscale_microshift_raw_root",
+                           "path":  "C:\\a10x\\gb\\microshift-fullscale-resume-20260701-165241Z",
+                           "exists":  true,
+                           "bytes":  135632648,
+                           "delete_only_after_evidence_commit_push_and_hosted_check":  true
+                       },
+                       {
+                           "logical_name":  "docker_requalification_raw_output",
+                           "path":  "C:\\Users\\bjw-0\\Downloads\\Amazon10_support-capacity-reliability-platform-github\\outputs\\docker_qualification\\docker-20260701-154321Z",
+                           "exists":  true,
+                           "bytes":  9392011,
+                           "delete_only_after_evidence_commit_push_and_hosted_check":  true
+                       },
+                       {
+                           "logical_name":  "qa_microshift_candidate_workspace",
+                           "path":  "C:\\a10x\\qa\\micro-shift-candidate-v3-20260701-051610Z",
+                           "exists":  true,
+                           "bytes":  10047198,
+                           "delete_only_after_evidence_commit_push_and_hosted_check":  true
+                       },
+                       {
+                           "logical_name":  "qa_torch_batch_shape_workspace",
+                           "path":  "C:\\a10x\\qa\\torch-batch-shape-repair-v2-20260630-225156",
+                           "exists":  true,
+                           "bytes":  497037867,
+                           "delete_only_after_evidence_commit_push_and_hosted_check":  true
+                       }
+                   ],
+    "explicitly_preserve":  [
+                                "Git working tree",
+                                "Committed docs/validation/microshift_fullscale_20260701 evidence package",
+                                "Any active environment outside listed QA workspaces"
+                            ]
+}
