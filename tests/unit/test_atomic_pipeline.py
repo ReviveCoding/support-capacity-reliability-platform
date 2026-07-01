@@ -38,6 +38,10 @@ def test_failed_run_preserves_previous_published_output(tmp_path: Path, monkeypa
     assert not (tmp_path / ".published.lock").exists()
 
 
+def test_current_process_liveness_check_is_safe() -> None:
+    assert pipeline._pid_is_alive(os.getpid())
+
+
 def test_active_run_lock_is_rejected(tmp_path: Path, monkeypatch):
     config_path = _config(tmp_path)
     lock = tmp_path / ".published.lock"

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ctypes
 import json
 import os
 import platform
@@ -1073,8 +1074,62 @@ def _source_tree_hash() -> str:
 
 
 def _pid_is_alive(pid: int) -> bool:
+    """Return whether pid appears to refer to an active process."""
+
     if pid <= 0:
         return False
+
+    if os.name == "nt":
+        # os.kill(pid, 0) is a POSIX liveness idiom, but on Windows a
+        # non-console signal can terminate the target process. Query a process
+        # handle instead, and treat access-denied as conservatively alive.
+        process_query_limited_information = 0x1000
+        error_access_denied = 5
+        still_active = 259
+
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+        open_process = kernel32.OpenProcess
+        open_process.argtypes = [
+            ctypes.c_ulong,
+            ctypes.c_int,
+            ctypes.c_ulong,
+        ]
+        open_process.restype = ctypes.c_void_p
+
+        get_exit_code_process = kernel32.GetExitCodeProcess
+        get_exit_code_process.argtypes = [
+            ctypes.c_void_p,
+            ctypes.POINTER(ctypes.c_ulong),
+        ]
+        get_exit_code_process.restype = ctypes.c_int
+
+        close_handle = kernel32.CloseHandle
+        close_handle.argtypes = [ctypes.c_void_p]
+        close_handle.restype = ctypes.c_int
+
+        handle = open_process(
+            process_query_limited_information,
+            False,
+            pid,
+        )
+
+        if not handle:
+            return ctypes.get_last_error() == error_access_denied
+
+        try:
+            exit_code = ctypes.c_ulong()
+
+            if not get_exit_code_process(
+                handle,
+                ctypes.byref(exit_code),
+            ):
+                return True
+
+            return exit_code.value == still_active
+        finally:
+            close_handle(handle)
+
     try:
         os.kill(pid, 0)
     except ProcessLookupError:
@@ -1083,6 +1138,7 @@ def _pid_is_alive(pid: int) -> bool:
         return True
     except OSError:
         return False
+
     return True
 
 
