@@ -7,6 +7,13 @@ import pandas as pd
 from scipy.stats import t as student_t
 
 from support_capacity_reliability.optimization.scheduler import TacticalShiftScheduler
+from support_capacity_reliability.optimization.shift_contract import (
+    build_shift_mapping as _build_shift_mapping,
+)
+from support_capacity_reliability.optimization.shift_contract import (
+    ordered_shifts,
+    resolve_shift_duration_hours,
+)
 from support_capacity_reliability.queueing.erlang import required_agents_erlang_a
 from support_capacity_reliability.queueing.simulator import (
     MultiSkillVoiceSimulator,
@@ -48,13 +55,27 @@ class PolicyResult:
         return asdict(self)
 
 
-def build_shift_mapping(horizon: pd.DataFrame) -> dict[pd.Timestamp, str]:
-    timestamps = sorted(pd.to_datetime(horizon["timestamp"], utc=True).unique())
-    midpoint = max(1, len(timestamps) // 2)
-    return {
-        pd.Timestamp(timestamp): ("early" if idx < midpoint else "late")
-        for idx, timestamp in enumerate(timestamps)
-    }
+def build_shift_mapping(
+    horizon: pd.DataFrame,
+    *,
+    interval_minutes: int | None = None,
+    configured_shift_duration_hours: float | None = None,
+) -> dict[pd.Timestamp, str]:
+    """Preserve the legacy API while enabling explicit micro-shift mapping."""
+    if configured_shift_duration_hours is not None and interval_minutes is None:
+        raise ValueError("interval_minutes is required when configured_shift_duration_hours is set")
+    if interval_minutes is None:
+        timestamps = sorted(pd.to_datetime(horizon["timestamp"], utc=True).unique())
+        midpoint = max(1, len(timestamps) // 2)
+        return {
+            pd.Timestamp(timestamp): ("early" if idx < midpoint else "late")
+            for idx, timestamp in enumerate(timestamps)
+        }
+    return _build_shift_mapping(
+        horizon,
+        interval_minutes=interval_minutes,
+        configured_shift_duration_hours=configured_shift_duration_hours,
+    )
 
 
 def build_required_coverage(
@@ -68,13 +89,18 @@ def build_required_coverage(
     max_agents: int,
     shrinkage_buffer: float,
     staffing_load_quantile: float = 0.85,
+    configured_shift_duration_hours: float | None = None,
 ) -> tuple[dict[tuple[str, str], int], dict[pd.Timestamp, str]]:
-    mapping = build_shift_mapping(horizon)
+    mapping = build_shift_mapping(
+        horizon,
+        interval_minutes=interval_minutes,
+        configured_shift_duration_hours=configured_shift_duration_hours,
+    )
     working = horizon.copy()
     working["timestamp"] = pd.to_datetime(working["timestamp"], utc=True)
     working["shift"] = working["timestamp"].map(mapping)
     required: dict[tuple[str, str], int] = {}
-    for shift in ["early", "late"]:
+    for shift in ordered_shifts(mapping):
         shift_frame = working[working["shift"] == shift]
         for skill in skills:
             group = shift_frame[shift_frame["skill"] == skill]
@@ -156,7 +182,7 @@ def _simulate_once(
     simulation_weight = 0
     answered_weight = 0
     all_flow_conserved = True
-    for shift_idx, shift in enumerate(["early", "late"]):
+    for shift_idx, shift in enumerate(ordered_shifts(shift_mapping)):
         shift_frame = working[working["shift"] == shift]
         if shift_frame.empty:
             continue
@@ -250,13 +276,21 @@ def evaluate_existing_schedule(
     seed: int,
     replications: int,
     shift_duration_hours: float | None = None,
+    configured_shift_duration_hours: float | None = None,
 ) -> PolicyResult:
-    shift_mapping = build_shift_mapping(horizon)
+    shift_mapping = build_shift_mapping(
+        horizon,
+        interval_minutes=interval_minutes,
+        configured_shift_duration_hours=configured_shift_duration_hours,
+    )
     _, hard_violations, feasibility = schedule_coverage(schedule, required)
     assigned_shifts = int(schedule["assigned"].sum())
     if shift_duration_hours is None:
-        interval_count = max(len(pd.to_datetime(horizon["timestamp"], utc=True).unique()), 1)
-        shift_duration_hours = interval_count * interval_minutes / 60.0 / 2.0
+        shift_duration_hours = resolve_shift_duration_hours(
+            horizon,
+            interval_minutes=interval_minutes,
+            configured_shift_duration_hours=configured_shift_duration_hours,
+        )
     labor_cost = _labor_cost(
         schedule,
         agents,
@@ -414,8 +448,9 @@ def evaluate_staffing_policy(
     seed: int,
     replications: int = 1,
     staffing_load_quantile: float = 0.85,
+    configured_shift_duration_hours: float | None = None,
 ) -> tuple[PolicyResult, pd.DataFrame, dict[tuple[str, str], int]]:
-    required, _ = build_required_coverage(
+    required, shift_mapping = build_required_coverage(
         horizon,
         prediction_column,
         skills,
@@ -426,12 +461,12 @@ def evaluate_staffing_policy(
         max_agents,
         shrinkage_buffer,
         staffing_load_quantile,
+        configured_shift_duration_hours,
     )
-    shift_duration_hours = (
-        max(len(pd.to_datetime(horizon["timestamp"], utc=True).unique()), 1)
-        * interval_minutes
-        / 60.0
-        / 2.0
+    resolved_shift_duration_hours = resolve_shift_duration_hours(
+        horizon,
+        interval_minutes=interval_minutes,
+        configured_shift_duration_hours=configured_shift_duration_hours,
     )
     scheduler = TacticalShiftScheduler(
         time_limit_seconds=scheduler_time_limit,
@@ -441,9 +476,10 @@ def evaluate_staffing_policy(
     schedule_result = scheduler.solve(
         agents,
         required,
-        ["early", "late"],
+        ordered_shifts(shift_mapping),
         skills,
-        shift_duration_hours=shift_duration_hours,
+        shift_duration_hours=resolved_shift_duration_hours,
+        allow_multiple_shifts_per_agent=configured_shift_duration_hours is not None,
     )
     schedule = schedule_result.schedule.copy()
     schedule["assignment_type"] = np.where(schedule["assigned"] == 1, "regular", "unassigned")
@@ -461,6 +497,7 @@ def evaluate_staffing_policy(
         shortage_penalty=shortage_penalty,
         seed=seed,
         replications=replications,
-        shift_duration_hours=shift_duration_hours,
+        shift_duration_hours=resolved_shift_duration_hours,
+        configured_shift_duration_hours=configured_shift_duration_hours,
     )
     return policy, schedule, required

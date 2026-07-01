@@ -131,6 +131,7 @@ class QueueConfig(StrictModel):
     replications: int = Field(default=4, ge=2)
     policy_tuning_replications: int = Field(default=3, ge=2)
     staffing_load_quantile: float = Field(default=0.85, gt=0, lt=1)
+    shift_duration_hours: int | None = Field(default=None, ge=1)
 
 
 class OptimizationConfig(StrictModel):
@@ -187,6 +188,17 @@ class AppConfig(StrictModel):
             raise ValueError("interval_minutes must divide 1440 exactly")
         if (self.queue.simulation_hours * 60) % self.data.interval_minutes != 0:
             raise ValueError("queue.simulation_hours must contain an integer number of intervals")
+        if self.queue.shift_duration_hours is not None:
+            if self.queue.simulation_hours % self.queue.shift_duration_hours != 0:
+                raise ValueError(
+                    "queue.simulation_hours must be divisible by queue.shift_duration_hours"
+                )
+            shifts_per_horizon = self.queue.simulation_hours // self.queue.shift_duration_hours
+            if shifts_per_horizon < 2 or shifts_per_horizon % 2 != 0:
+                raise ValueError(
+                    "explicit micro-shift mode requires an even number of "
+                    "at least two shifts per simulation horizon"
+                )
 
         intervals_per_day = minutes_per_day // self.data.interval_minutes
         total_intervals = self.data.days * intervals_per_day

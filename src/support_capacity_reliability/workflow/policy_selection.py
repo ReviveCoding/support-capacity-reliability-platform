@@ -12,6 +12,9 @@ from support_capacity_reliability.evaluation.decision import (
 )
 from support_capacity_reliability.forecasting.base import ForecastOutput
 from support_capacity_reliability.optimization.recourse import apply_intraday_recourse
+from support_capacity_reliability.optimization.shift_contract import (
+    resolve_shift_duration_hours,
+)
 
 
 def historical_prediction(
@@ -91,6 +94,7 @@ def evaluate_policy_candidates(
             seed=seed,
             replications=replications,
             staffing_load_quantile=config.queue.staffing_load_quantile,
+            configured_shift_duration_hours=config.queue.shift_duration_hours,
         )
         rows.append(result.to_dict())
         schedules[policy_name] = schedule
@@ -124,11 +128,10 @@ def evaluate_recourse_aware_policy_candidates(
     rows: list[dict[str, Any]] = []
     repaired_schedules: dict[str, pd.DataFrame] = {}
     action_frames: dict[str, pd.DataFrame] = {}
-    shift_duration_hours = (
-        max(len(pd.to_datetime(horizon["timestamp"], utc=True).unique()), 1)
-        * config.data.interval_minutes
-        / 60.0
-        / 2.0
+    shift_duration_hours = resolve_shift_duration_hours(
+        horizon,
+        interval_minutes=config.data.interval_minutes,
+        configured_shift_duration_hours=config.queue.shift_duration_hours,
     )
 
     for base_policy, schedule in schedules.items():
@@ -158,9 +161,15 @@ def evaluate_recourse_aware_policy_candidates(
             seed=seed,
             replications=replications,
             shift_duration_hours=shift_duration_hours,
+            configured_shift_duration_hours=config.queue.shift_duration_hours,
         )
         actions = repair.actions.copy()
-        applied_actions = int(actions.loc[actions["amount"] > 0, "amount"].sum())
+        applied_actions = int(
+            actions.loc[
+                (actions["amount"] > 0) & (~actions["action"].eq("unrepaired_undercoverage")),
+                "amount",
+            ].sum()
+        )
         positive_recourse_cost = float(
             actions.loc[actions["estimated_cost"] > 0, "estimated_cost"].sum()
         )

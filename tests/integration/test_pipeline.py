@@ -31,7 +31,12 @@ def test_end_to_end_pipeline(tmp_path: Path):
     recourse = __import__("pandas").read_csv(
         tmp_path / "run" / "metrics" / "intraday_recourse_actions.csv"
     )
-    assert summary["intraday_recourse_actions"] == int((recourse["amount"] > 0).sum())
+    # Diagnostic unrepaired-undercoverage rows have a positive shortage amount,
+    # but they do not represent an applied schedule-repair action.
+    applied_action_rows = int(
+        ((recourse["amount"] > 0) & (~recourse["action"].eq("unrepaired_undercoverage"))).sum()
+    )
+    assert summary["intraday_recourse_actions"] == applied_action_rows
     assert summary["intraday_recourse_decision_rows"] == len(recourse)
     assert (tmp_path / "run" / "reports" / "validation_report.md").exists()
     assert (tmp_path / "run" / "reports" / "model_selection_report.md").exists()

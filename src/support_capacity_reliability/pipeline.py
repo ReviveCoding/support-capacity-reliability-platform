@@ -36,6 +36,9 @@ from support_capacity_reliability.forecasting.factory import build_model
 from support_capacity_reliability.monitoring import build_monitoring_snapshot
 from support_capacity_reliability.optimization.capacity import StrategicCapacityPlanner
 from support_capacity_reliability.optimization.recourse import apply_intraday_recourse
+from support_capacity_reliability.optimization.shift_contract import (
+    resolve_shift_duration_hours,
+)
 from support_capacity_reliability.reliability.calibration import IntervalCalibrator
 from support_capacity_reliability.reliability.rcwe import ReferenceConditionedWorkloadEnvelope
 from support_capacity_reliability.reliability.release_gate import evaluate_release_gate
@@ -760,6 +763,7 @@ def _run_pipeline_impl(config: AppConfig) -> dict[str, Any]:
     write_json(output_dir / "metrics" / "decision_diagnostics.json", decision_diagnostics)
 
     selected_required_coverage = policy_requirements[selected_policy]
+    selected_tactical_shifts = sorted({shift for shift, _ in selected_required_coverage})
     planned_capacity_by_skill = dict(
         zip(
             capacity_plan.skills,
@@ -772,7 +776,8 @@ def _run_pipeline_impl(config: AppConfig) -> dict[str, Any]:
     total_tactical_coverage = 0
     for skill in config.data.skills:
         tactical_peak = max(
-            int(selected_required_coverage.get((shift, skill), 0)) for shift in ["early", "late"]
+            int(selected_required_coverage.get((shift, skill), 0))
+            for shift in selected_tactical_shifts
         )
         planned_units = int(planned_capacity_by_skill.get(skill, 0))
         primary_agents = int((bundle.agents["primary_skill"].astype(str) == skill).sum())
@@ -824,7 +829,11 @@ def _run_pipeline_impl(config: AppConfig) -> dict[str, Any]:
         output_dir / "metrics" / "realized_required_coverage.json",
         {f"{shift}::{skill}": value for (shift, skill), value in realized_required.items()},
     )
-    shift_duration_hours = planning_horizon_hours / 2.0
+    shift_duration_hours = resolve_shift_duration_hours(
+        horizon,
+        interval_minutes=config.data.interval_minutes,
+        configured_shift_duration_hours=config.queue.shift_duration_hours,
+    )
     repair = apply_intraday_recourse(
         schedule=pre_recourse_schedule,
         agents=bundle.agents,
@@ -834,7 +843,13 @@ def _run_pipeline_impl(config: AppConfig) -> dict[str, Any]:
         shift_duration_hours=shift_duration_hours,
     )
     recourse_frame = repair.actions
-    applied_recourse_actions = int(recourse_frame.loc[recourse_frame["amount"] > 0, "amount"].sum())
+    applied_recourse_actions = int(
+        recourse_frame.loc[
+            (recourse_frame["amount"] > 0)
+            & (~recourse_frame["action"].eq("unrepaired_undercoverage")),
+            "amount",
+        ].sum()
+    )
     recourse_decision_rows = int(len(recourse_frame))
     pre_recourse_assigned_shifts = max(int(pre_recourse_schedule["assigned"].sum()), 1)
     recourse_action_rate = applied_recourse_actions / pre_recourse_assigned_shifts
@@ -865,6 +880,7 @@ def _run_pipeline_impl(config: AppConfig) -> dict[str, Any]:
         seed=config.project.seed,
         replications=config.queue.replications,
         shift_duration_hours=shift_duration_hours,
+        configured_shift_duration_hours=config.queue.shift_duration_hours,
     )
     decision_diagnostics.update(
         {

@@ -4,6 +4,8 @@ from dataclasses import asdict, dataclass
 
 import pandas as pd
 
+from support_capacity_reliability.optimization.shift_contract import shift_band
+
 
 @dataclass(frozen=True)
 class RecourseAction:
@@ -139,7 +141,7 @@ def apply_intraday_recourse(
                 & (repaired["assigned_skill"] == skill)
             ].copy()
             removable["preference_mismatch"] = removable["agent_id"].map(
-                lambda agent_id, shift=shift: int(preference_map.get(agent_id) != shift)
+                lambda agent_id, shift=shift: int(preference_map.get(agent_id) != shift_band(shift))
             )
             removable["proficiency"] = removable["agent_id"].map(
                 lambda agent_id: proficiency_map.get(agent_id, 1.0)
@@ -243,7 +245,7 @@ def apply_intraday_recourse(
             agent_id = str(row.agent_id)
             if skill not in skill_map.get(agent_id, set()):
                 continue
-            if shift not in availability_map.get(agent_id, {"early", "late"}):
+            if shift_band(shift) not in availability_map.get(agent_id, {"early", "late"}):
                 continue
             if shift_duration_hours > max_daily_hours_map.get(agent_id, 2.0 * shift_duration_hours):
                 continue
@@ -258,7 +260,7 @@ def apply_intraday_recourse(
                     continue
             # Prefer unused reserve agents, then agents whose target shift matches preference,
             # then higher proficiency. The tuple is deterministic because agent_id is final.
-            preference_mismatch = int(preference_map.get(agent_id) != shift)
+            preference_mismatch = int(preference_map.get(agent_id) != shift_band(shift))
             candidates.append(
                 (
                     total_assignments,
@@ -294,10 +296,26 @@ def apply_intraday_recourse(
                 }
             )
 
-    remaining = sum(
-        max(int(requirement) - achieved(shift, skill), 0)
-        for (shift, skill), requirement in required_coverage.items()
-    )
+    unresolved_rows = [
+        (shift, skill, max(int(requirement) - achieved(shift, skill), 0))
+        for (shift, skill), requirement in sorted(required_coverage.items())
+    ]
+    for shift, skill, unrepaired in unresolved_rows:
+        if unrepaired <= 0:
+            continue
+        action_rows.append(
+            {
+                "action": "unrepaired_undercoverage",
+                "amount": int(unrepaired),
+                "reason": "no_eligible_reserve_or_overtime",
+                "estimated_cost": 0.0,
+                "agent_id": None,
+                "shift": shift,
+                "skill": skill,
+                "source_skill": None,
+            }
+        )
+    remaining = int(sum(unrepaired for _, _, unrepaired in unresolved_rows))
     actions = pd.DataFrame(action_rows)
     if actions.empty:
         actions = pd.DataFrame(

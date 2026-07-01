@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import pandas as pd
 from ortools.sat.python import cp_model
 
+from support_capacity_reliability.optimization.shift_contract import shift_band
+
 
 @dataclass
 class ScheduleResult:
@@ -45,6 +47,7 @@ class TacticalShiftScheduler:
         shifts: list[str],
         skills: list[str],
         shift_duration_hours: float = 8.0,
+        allow_multiple_shifts_per_agent: bool = False,
     ) -> ScheduleResult:
         model = cp_model.CpModel()
         agent_ids = agents["agent_id"].astype(str).tolist()
@@ -63,13 +66,20 @@ class TacticalShiftScheduler:
             str(row.agent_id): float(getattr(row, "max_daily_hours", shift_duration_hours))
             for row in agents.itertuples(index=False)
         }
+        overtime_eligible_map = {
+            str(row.agent_id): bool(getattr(row, "overtime_eligible", False))
+            for row in agents.itertuples(index=False)
+        }
+        shift_duration_minutes = int(round(shift_duration_hours * 60.0))
+        if shift_duration_minutes <= 0:
+            raise ValueError("shift_duration_hours must be positive")
         assign: dict[tuple[str, str, str], cp_model.IntVar] = {}
         works: dict[tuple[str, str], cp_model.IntVar] = {}
         for agent in agent_ids:
             for shift in shifts:
                 works[(agent, shift)] = model.NewBoolVar(f"works_{agent}_{shift}")
                 if (
-                    shift not in availability_map[agent]
+                    shift_band(shift) not in availability_map[agent]
                     or shift_duration_hours > max_daily_hours_map[agent]
                 ):
                     model.Add(works[(agent, shift)] == 0)
@@ -84,7 +94,11 @@ class TacticalShiftScheduler:
                     model.Add(sum(eligible) == works[(agent, shift)])
                 else:
                     model.Add(works[(agent, shift)] == 0)
-            model.Add(sum(works[(agent, shift)] for shift in shifts) <= 1)
+            assigned_shift_count = sum(works[(agent, shift)] for shift in shifts)
+            max_daily_minutes = int(round(max_daily_hours_map[agent] * 60.0))
+            model.Add(assigned_shift_count * shift_duration_minutes <= max_daily_minutes)
+            if not allow_multiple_shifts_per_agent or not overtime_eligible_map[agent]:
+                model.Add(assigned_shift_count <= 1)
 
         shortages: dict[tuple[str, str], cp_model.IntVar] = {}
         for shift in shifts:
@@ -106,7 +120,7 @@ class TacticalShiftScheduler:
             integer_cost = int(round(float(row.regular_hourly_cost) * shift_duration_hours))
             for shift in shifts:
                 labor_cost_terms.append(integer_cost * works[(agent, shift)])
-                if preference_map[agent] != shift:
+                if preference_map[agent] != shift_band(shift):
                     preference_terms.append(self.preference_penalty * works[(agent, shift)])
         shortage_terms = [self.shortage_penalty * shortage for shortage in shortages.values()]
         model.Minimize(sum(labor_cost_terms) + sum(preference_terms) + sum(shortage_terms))
