@@ -39,15 +39,15 @@ Not executed: GitHub-hosted runners, remote push/release/workflow dispatch, Wind
 
 | Severity | Problem | Root cause | Fix | Regression test | Result |
 |---|---|---|---|---|---|
-| High | CLI가 JSON을 출력한 뒤 native-library shutdown에서 종료되지 않을 수 있음 | 장시간/solver pipeline을 public interpreter에서 직접 실행하거나 public CLI 전체에 os._exit 우회를 적용하면 lifecycle 및 cleanup contract가 깨짐 | pipeline/doctor/model-bundle probe만 bounded isolated worker에서 실행하고 public CLI는 정상 종료; timeout·partial-output·busy exit contract 추가 | test_process_utils.py, test_runtime.py, test_doctor.py, test_cli.py 및 실제 CLI 반복 실행 | PASS |
-| High | Base install이 사실상 PyTorch에 숨은 의존 | pipeline/factory의 eager torch import와 base dependencies의 torch 선언 | lazy import와 torch/chronos/full optional extras; CPU canonical path는 LightGBM+RCWE 유지 | test_optional_dependencies.py, test_torch_model.py, clean Q2 base install/E2E | PASS |
-| High | Core report path에서 tabulate 미선언 | DataFrame.to_markdown() 사용과 runtime manifest 불일치 | tabulate>=0.9,<0.10를 runtime dependency와 doctor에 추가 | clean Q2 non-editable install + canonical E2E | PASS |
-| High | Unbounded latest dependency resolution에서 deterministic gate regression | NumPy 2.4/pandas 3.0/scikit-learn 1.9까지 허용되어 검증되지 않은 조합이 선택됨 | 검증된 minor-line upper bounds와 exact Python 3.13 qualification constraints 추가; metric/split/threshold는 변경하지 않음 | Q2/Q3 clean installs 및 동일 WAPE/cost/config hash 확인 | PASS |
-| Medium | Module CLI와 console-script --version 문자열 불일치 | argparse version label이 entrypoint마다 달랐음 | support-capacity 1.4.1rc2로 통일 | CLI tests + Q2/Q3 outside-repo version checks | PASS |
-| Medium | API request unknown fields가 silently ignored | Pydantic request models에 extra=forbid 미설정 | 모든 public request model을 strict schema로 전환 | staffing/pipeline unknown-field 422 tests + real-socket failure injection | PASS |
-| Medium | Benchmark가 qualification-owned SIGTERM(-15)을 service failure로 오분류 | POSIX signal return-code semantics 미반영 | expected termination signal을 명시적으로 허용하고 다른 nonzero는 실패 | test_benchmark_api.py + exact 200-request benchmark | PASS |
-| Medium | Clean copy에 __pycache__가 포함되어 traceback path가 이전 workspace를 가리킴 | clean-room copy exclusion 불완전 | cache/bytecode 제외 후 모든 이전 evidence 무효화 및 clean reset | 새 Unicode/space path의 import/traceback/source path 점검 | PASS |
-| Medium | release_candidate_handoff.json이 rc1 fingerprint를 가리킴 | qualification 수정 후 handoff 미재생성 | 최종 frozen source에서 handoff와 dependency snapshot/checksum 재생성 | handoff referenced-file checksum validation | PASS |
+| High | CLI could hang after emitting JSON during native-library shutdown | Running long solver pipelines directly in the public interpreter, or bypassing cleanup with global `os._exit`, breaks lifecycle guarantees | Run pipeline, doctor, and model-bundle probes in bounded isolated workers; preserve normal public CLI exit and define timeout, partial-output, and busy-exit behavior | `test_process_utils.py`, `test_runtime.py`, `test_doctor.py`, `test_cli.py` and repeated CLI runs | PASS |
+| High | Base installation implicitly depended on PyTorch | Eager Torch imports in pipeline/factory and Torch included in base dependencies | Switch to lazy imports and optional Torch, Chronos, and full extras; retain LightGBM+RCWE in the CPU path | Optional dependency tests and clean Q2 base-install E2E | PASS |
+| High | Missing `tabulate` dependency in core reporting | `DataFrame.to_markdown()` required a package absent from runtime dependencies | Add `tabulate>=0.9,<0.10` to runtime dependencies and doctor checks | Q2 clean non-editable installation and canonical E2E | PASS |
+| High | Unbounded dependency resolution changed deterministic behavior | Unqualified NumPy 2.4, pandas 3.0, and scikit-learn 1.9 combinations could be selected | Bound qualified minor versions and add Python 3.13 constraints without modifying metrics, data splits, or thresholds | Q2/Q3 clean installations and matching WAPE, cost and configuration hashes | PASS |
+| Medium | Module CLI and console-script `--version` disagreed | Entrypoints used different `argparse` version strings | Use `support-capacity 1.4.1rc2` consistently | CLI tests and out-of-repository Q2/Q3 version checks | PASS |
+| Medium | Unknown API request fields were silently ignored | Public Pydantic models did not prohibit extra fields | Configure strict request schemas with `extra=forbid` | Unknown-field 422 checks and real-socket failure injection | PASS |
+| Medium | Benchmark misclassified qualification-owned SIGTERM as service failure | POSIX signal return-code semantics were not handled | Accept the expected termination signal; fail for other nonzero outcomes | `test_benchmark_api.py` and the 200-request benchmark | PASS |
+| Medium | Cached bytecode in clean copies produced stale traceback paths | Clean-room copies did not exclude `__pycache__` | Exclude bytecode, invalidate previous evidence and repeat clean qualification | Import, traceback and source-path checks under a Unicode/space path | PASS |
+| Medium | Candidate handoff pointed to an older release fingerprint | The handoff was not regenerated after qualification changes | Regenerate the handoff, dependency snapshot and checksums from frozen final source | Referenced-file checksum validation | PASS |
 
 
 ## 5. Local qualification matrix
@@ -277,7 +277,7 @@ The machine-readable chronological command ledger is `reports/candidate/evidence
 
 ## 16. Final claim
 
-검증한 **Linux x86_64 / Python 3.13.5 / CPU canonical path / clean non-editable source install / rebuilt-wheel-only install / CLI·API·E2E·artifact reload·failure-injection·concurrency·performance 관찰 범위** 내에서는 알려진 release blocker가 발견되지 않았으며, 기록된 gate가 통과했다.
+Within the tested **Linux x86_64 / Python 3.13.5 / canonical CPU path / clean non-editable source installation / rebuilt wheel installation / CLI, API, end-to-end, artifact reload, failure-injection, concurrency, and observed performance scope**, no known release blocker was found and the recorded qualification gates passed.
 
 
 ## Post-upload lifecycle patch addendum
