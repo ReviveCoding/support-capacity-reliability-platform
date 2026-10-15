@@ -13,7 +13,7 @@ license-files = ["LICENSE"]
 authors = [{name = "Jinwoo Bae"}]
 dependencies = [
   "numpy>=1.26,<2.4",
-  "pandas>=2.1,<2.3",
+  "pandas>=2.1,<3.1",
   "scipy>=1.11,<1.18",
   "scikit-learn>=1.4,<1.9",
   "lightgbm>=4.0,<5",
