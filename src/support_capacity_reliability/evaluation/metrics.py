@@ -23,9 +23,7 @@ def interval_coverage(y_true: np.ndarray, lower: np.ndarray, upper: np.ndarray) 
 def forecast_metrics(y_true: np.ndarray, forecast: ForecastOutput) -> dict[str, float]:
     """Evaluate point forecasts and the nominal 80% prediction interval."""
     observed_values = np.asarray(y_true, dtype=float)
-    interval_coverage_rate = interval_coverage(
-        observed_values, forecast.q10, forecast.q90
-    )
+    interval_coverage_rate = interval_coverage(observed_values, forecast.q10, forecast.q90)
     return {
         "mae": float(np.mean(np.abs(observed_values - forecast.q50))),
         "rmse": float(np.sqrt(np.mean((observed_values - forecast.q50) ** 2))),
