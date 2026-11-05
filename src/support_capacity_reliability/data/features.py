@@ -74,16 +74,18 @@ def build_supervised_frame(
         out[column] = target_groups.shift(lag)
         feature_columns.append(column)
 
-    for window in sorted(set(rolling_windows)):
-        shifted = target_groups.shift(1)
+    windows = sorted(set(rolling_windows))
+    if windows:
+        shifted_target_groups = target_groups.shift(1).groupby([out["region"], out["skill"]])
+    for window in windows:
         mean_column = f"roll_mean_{window}"
         std_column = f"roll_std_{window}"
-        out[mean_column] = shifted.groupby([out["region"], out["skill"]]).transform(
+        out[mean_column] = shifted_target_groups.transform(
             lambda series, window=window: series.rolling(
                 window, min_periods=max(2, min(window, 4))
             ).mean()
         )
-        out[std_column] = shifted.groupby([out["region"], out["skill"]]).transform(
+        out[std_column] = shifted_target_groups.transform(
             lambda series, window=window: series.rolling(
                 window, min_periods=max(2, min(window, 4))
             ).std()
@@ -95,9 +97,9 @@ def build_supervised_frame(
         lag_1 = f"{operational_column}_lag_1"
         lag_48 = f"{operational_column}_lag_48"
         rolling = f"{operational_column}_roll_mean_48"
-        out[lag_1] = operational_groups.shift(1)
-        out[lag_48] = operational_groups.shift(48)
         shifted_operational = operational_groups.shift(1)
+        out[lag_1] = shifted_operational
+        out[lag_48] = operational_groups.shift(48)
         out[rolling] = shifted_operational.groupby([out["region"], out["skill"]]).transform(
             lambda series: series.rolling(48, min_periods=4).mean()
         )

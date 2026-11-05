@@ -21,18 +21,19 @@ def interval_coverage(y_true: np.ndarray, lower: np.ndarray, upper: np.ndarray) 
 
 
 def forecast_metrics(y_true: np.ndarray, forecast: ForecastOutput) -> dict[str, float]:
-    y = np.asarray(y_true, dtype=float)
-    coverage = interval_coverage(y, forecast.q10, forecast.q90)
+    """Evaluate point forecasts and the nominal 80% prediction interval."""
+    observed_values = np.asarray(y_true, dtype=float)
+    interval_coverage_rate = interval_coverage(observed_values, forecast.q10, forecast.q90)
     return {
-        "mae": float(np.mean(np.abs(y - forecast.q50))),
-        "rmse": float(np.sqrt(np.mean((y - forecast.q50) ** 2))),
-        "wape": wape(y, forecast.q50),
-        "signed_bias": float(np.mean(forecast.q50 - y)),
-        "pinball_q10": pinball(y, forecast.q10, 0.1),
-        "pinball_q50": pinball(y, forecast.q50, 0.5),
-        "pinball_q90": pinball(y, forecast.q90, 0.9),
-        "interval_coverage_80": coverage,
-        "coverage_error": abs(coverage - 0.8),
+        "mae": float(np.mean(np.abs(observed_values - forecast.q50))),
+        "rmse": float(np.sqrt(np.mean((observed_values - forecast.q50) ** 2))),
+        "wape": wape(observed_values, forecast.q50),
+        "signed_bias": float(np.mean(forecast.q50 - observed_values)),
+        "pinball_q10": pinball(observed_values, forecast.q10, 0.1),
+        "pinball_q50": pinball(observed_values, forecast.q50, 0.5),
+        "pinball_q90": pinball(observed_values, forecast.q90, 0.9),
+        "interval_coverage_80": interval_coverage_rate,
+        "coverage_error": abs(interval_coverage_rate - 0.8),
         "mean_interval_width": float(np.mean(forecast.q90 - forecast.q10)),
     }
 
